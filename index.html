@@ -1237,13 +1237,21 @@
                 return months[d.getMonth()] + '-' + d.getDate();
             };
             
+            const formatFullDate = (dateStr) => {
+                if (!dateStr) return 'N/A';
+                const d = new Date(dateStr);
+                return d.getFullYear() + '-' + 
+                       String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+                       String(d.getDate()).padStart(2, '0');
+            };
+            
             const weekDates = emp.dates || getWeekDates(emp.weekStart);
             const dailyRecords = emp.dailyRecords || [];
             
             // Shorten name if too long
             let displayName = emp.name;
-            if (displayName.length > 25) {
-                displayName = displayName.substring(0, 23) + '..';
+            if (displayName.length > 30) {
+                displayName = displayName.substring(0, 28) + '..';
             }
             
             // Build attendance cells (7 days + total)
@@ -1280,19 +1288,22 @@
             const grossPay = emp.finalSalary;
             const netPay = grossPay - caDeduction;
             
+            const weekStartFormatted = formatFullDate(emp.weekStart);
+            const weekEndFormatted = formatFullDate(emp.weekEnd);
+            
             return `
                 <div class="payslip">
                     <div class="payslip-header">
                         <h1>COLLAB PRINTING AND GRAPHIC DESIGN</h1>
                         <p>377 Manggahan St. Crossing Bayabas Toril Davao City</p>
-                        <p>${emp.weekStart || 'N/A'} to ${emp.weekEnd || 'N/A'}</p>
+                        <p>${weekStartFormatted} to ${weekEndFormatted}</p>
                     </div>
 
                     <div class="payslip-period">WEEKLY PAYSLIP</div>
 
                     <div class="payslip-employee-info">
                         <div>${displayName}</div>
-                        <div>${emp.weekStart || 'N/A'}</div>
+                        <div>${weekStartFormatted} to ${weekEndFormatted}</div>
                     </div>
 
                     <table class="attendance-table">
