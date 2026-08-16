@@ -510,34 +510,48 @@
     <div class="print-container" id="printContainer"></div>
 
     <script>
-        // Configuration - Update this with your deployed web app URL
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+        // ⚠️ IMPORTANT: Update this with your deployed Apps Script Web App URL
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
         
         let allEmployees = [];
         let filteredEmployees = [];
 
         // Initialize dashboard
-        function initDashboard() {
-            // Fetch real data from Google Sheets via Apps Script
-            google.script.run
-                .withSuccessHandler(function(response) {
-                    if (response.success) {
-                        allEmployees = response.data;
-                        filteredEmployees = [...allEmployees];
-                        renderEmployees();
-                        updateStats();
-                    } else {
-                        console.error('Error fetching payroll data:', response.message);
-                        showError('Failed to load payroll data: ' + response.message);
-                        loadSampleData(); // Fallback to sample data
-                    }
-                })
-                .withFailureHandler(function(error) {
-                    console.error('Error calling getPayrollData:', error);
-                    showError('Failed to connect to server');
-                    loadSampleData(); // Fallback to sample data
-                })
-                .getPayrollData();
+        async function initDashboard() {
+            try {
+                // Show loading state
+                const grid = document.getElementById('personnelGrid');
+                grid.innerHTML = '<div class="loading" style="color: #333;">Loading payroll data from Google Sheets...</div>';
+                
+                // Call Apps Script API to get payroll data
+                const response = await fetch(APPS_SCRIPT_URL + '?action=getPayrollData', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    allEmployees = result.data;
+                    filteredEmployees = [...allEmployees];
+                    renderEmployees();
+                    updateStats();
+                    console.log('✓ Loaded ' + allEmployees.length + ' employees from Google Sheets');
+                } else {
+                    console.warn('No payroll data returned:', result);
+                    showError('No payroll data found in Google Sheets');
+                    loadSampleData();
+                }
+                
+            } catch (error) {
+                console.error('Error fetching payroll data:', error);
+                showError('Failed to connect to Google Sheets: ' + error.message);
+                loadSampleData();
+            }
         }
 
         // Fallback to sample data if Google Sheets connection fails
@@ -555,7 +569,38 @@
                     overtimeFee: 270.83,
                     finalSalary: 3770.83,
                     weekStart: "2026-08-11",
-                    weekEnd: "2026-08-17"
+                    weekEnd: "2026-08-17",
+                    dates: ["2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17"]
+                },
+                {
+                    name: "Joel Santiago",
+                    perDayRate: 900.00,
+                    perHourRate: 112.5,
+                    overtimeRate: 146.25,
+                    workingHours: 32.00,
+                    workingDays: 4,
+                    overtimeHours: 0.00,
+                    regularSalary: 3600.00,
+                    overtimeFee: 0.00,
+                    finalSalary: 3600.00,
+                    weekStart: "2026-08-11",
+                    weekEnd: "2026-08-17",
+                    dates: ["2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17"]
+                },
+                {
+                    name: "Ray Irwin Rubio",
+                    perDayRate: 916.67,
+                    perHourRate: 114.58375,
+                    overtimeRate: 148.95887,
+                    workingHours: 48.00,
+                    workingDays: 6,
+                    overtimeHours: 5.00,
+                    regularSalary: 5500.02,
+                    overtimeFee: 744.79,
+                    finalSalary: 6244.81,
+                    weekStart: "2026-08-11",
+                    weekEnd: "2026-08-17",
+                    dates: ["2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17"]
                 }
             ];
             filteredEmployees = [...allEmployees];
@@ -675,7 +720,7 @@
         });
 
         // Download payslips as PDF
-        function downloadPayslips() {
+        async function downloadPayslips() {
             const checkboxes = document.querySelectorAll('.employee-checkbox:checked');
             
             if (checkboxes.length === 0) {
@@ -686,45 +731,42 @@
             const printContainer = document.getElementById('printContainer');
             printContainer.innerHTML = '<div class="loading" style="color: #333;">Loading attendance data...</div>';
 
-            let processedCount = 0;
-            const totalToProcess = checkboxes.length;
-            const payslipsHtml = [];
-
-            checkboxes.forEach((checkbox, idx) => {
-                const index = parseInt(checkbox.dataset.index);
-                const employee = filteredEmployees[index];
+            try {
+                const payslipsHtml = [];
                 
-                // Fetch attendance details for each employee
-                google.script.run
-                    .withSuccessHandler(function(response) {
-                        processedCount++;
+                // Fetch attendance data for each selected employee
+                for (const checkbox of checkboxes) {
+                    const index = parseInt(checkbox.dataset.index);
+                    const employee = filteredEmployees[index];
+                    
+                    try {
+                        // Call Apps Script API to get attendance details
+                        const response = await fetch(APPS_SCRIPT_URL + '?action=getEmployeeAttendanceDetails&name=' + encodeURIComponent(employee.name), {
+                            method: 'GET',
+                            mode: 'cors'
+                        });
                         
-                        if (response.success) {
-                            employee.dailyRecords = response.dailyRecords;
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                employee.dailyRecords = result.dailyRecords;
+                            }
                         }
-                        
-                        payslipsHtml.push(generatePayslip(employee));
-                        
-                        // When all employees are processed, show payslips
-                        if (processedCount === totalToProcess) {
-                            printContainer.innerHTML = payslipsHtml.join('');
-                            setTimeout(() => window.print(), 500);
-                        }
-                    })
-                    .withFailureHandler(function(error) {
-                        processedCount++;
+                    } catch (error) {
                         console.error('Error fetching attendance for ' + employee.name + ':', error);
-                        
-                        // Generate payslip without daily details
-                        payslipsHtml.push(generatePayslip(employee));
-                        
-                        if (processedCount === totalToProcess) {
-                            printContainer.innerHTML = payslipsHtml.join('');
-                            setTimeout(() => window.print(), 500);
-                        }
-                    })
-                    .getEmployeeAttendanceDetails(employee.name);
-            });
+                    }
+                    
+                    payslipsHtml.push(generatePayslip(employee));
+                }
+                
+                printContainer.innerHTML = payslipsHtml.join('');
+                setTimeout(() => window.print(), 500);
+                
+            } catch (error) {
+                console.error('Error generating payslips:', error);
+                alert('Error generating payslips. Please try again.');
+                printContainer.innerHTML = '';
+            }
         }
 
         // Generate individual payslip HTML - Matching image format
