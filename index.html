@@ -1191,35 +1191,35 @@
                 displayName = displayName.substring(0, 23) + '..';
             }
             
-            let attendanceRows = '';
-            if (dailyRecords.length > 0) {
-                attendanceRows = `
-                    <tr>
-                        <td style="text-align: left; font-weight: bold; padding-left: 2mm;">${displayName}</td>
-                        ${dailyRecords.map((day, idx) => {
-                            if (day.clockIn === '-' && day.clockOut === '-') {
-                                return '<td class="time-cell">-<br/>-</td>';
-                            }
-                            return `<td class="time-cell">${day.clockIn || '-'}<br/>${day.clockOut || '-'}</td>`;
-                        }).join('')}
-                        <td style="font-weight: bold;">${emp.workingDays || 0}d</td>
-                    </tr>
-                `;
+            // Build attendance cells (7 days + total)
+            let attendanceCells = '';
+            
+            if (dailyRecords.length === 7) {
+                // Map through all 7 days (Monday to Sunday)
+                for (let i = 0; i < 7; i++) {
+                    const day = dailyRecords[i];
+                    if (day.clockIn === '-' && day.clockOut === '-') {
+                        attendanceCells += '<td class="time-cell">-<br/>-</td>';
+                    } else {
+                        attendanceCells += `<td class="time-cell">${day.clockIn || '-'}<br/>${day.clockOut || '-'}</td>`;
+                    }
+                }
             } else {
-                attendanceRows = `
-                    <tr>
-                        <td style="text-align: left; font-weight: bold; padding-left: 2mm;">${displayName}</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td class="time-cell">-<br/>-</td>
-                        <td style="font-weight: bold;">${emp.workingDays || 0}d</td>
-                    </tr>
-                `;
+                // No data - show dashes for all 7 days
+                for (let i = 0; i < 7; i++) {
+                    attendanceCells += '<td class="time-cell">-<br/>-</td>';
+                }
             }
+            
+            // Add total column
+            attendanceCells += `<td style="font-weight: bold;">${emp.workingDays || 0}d</td>`;
+            
+            const attendanceRows = `
+                <tr>
+                    <td style="text-align: left; font-weight: bold; padding-left: 2mm;">${displayName}</td>
+                    ${attendanceCells}
+                </tr>
+            `;
             
             const caDeduction = caDeductions[emp.name] || 0;
             const grossPay = emp.finalSalary;
