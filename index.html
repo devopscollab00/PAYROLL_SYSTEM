@@ -18,128 +18,25 @@
             padding: 20px;
         }
 
-        /* Login Modal */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-        }
-
-        .login-box {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 400px;
-            width: 90%;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .login-box h2 {
-            color: #1e3c72;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 28px;
-        }
-
-        .login-box p {
-            color: #666;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #2a5298;
-            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
-        }
-
-        .login-btn, .modal-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .login-btn:hover, .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(42, 82, 152, 0.4);
-        }
-
-        .login-error, .modal-error {
-            background: #fee;
-            color: #c33;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        /* Main Dashboard - Hidden until logged in */
         .dashboard-container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            display: none;
         }
 
         .header {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             margin-bottom: 30px;
             position: relative;
         }
 
         .header h1 {
             color: #1e3c72;
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 36px;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .header p {
@@ -147,28 +44,11 @@
             font-size: 16px;
         }
 
-        .logout-btn {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            padding: 10px 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .logout-btn:hover {
-            background: #c82333;
-        }
-
         .controls {
             background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             margin-bottom: 30px;
         }
 
@@ -181,14 +61,14 @@
 
         .search-box {
             flex: 1;
-            min-width: 250px;
+            min-width: 280px;
         }
 
         .search-box input {
             width: 100%;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
             transition: all 0.3s;
         }
@@ -196,13 +76,13 @@
         .search-box input:focus {
             outline: none;
             border-color: #2a5298;
-            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
         }
 
         .btn {
-            padding: 12px 25px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
@@ -210,16 +90,17 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.4);
+            box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
         }
 
         .btn-success {
@@ -229,7 +110,17 @@
 
         .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(235, 51, 73, 0.4);
         }
 
         .btn-download {
@@ -239,17 +130,11 @@
 
         .btn-download:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
-            color: #333;
-        }
-
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(247, 151, 30, 0.4);
+        .btn:active {
+            transform: translateY(0);
         }
 
         .stats-grid {
@@ -261,11 +146,17 @@
 
         .stat-card {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
         }
 
         .stat-card::before {
@@ -274,66 +165,69 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #2a5298 0%, #7e22ce 100%);
+            height: 5px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         }
 
         .stat-card h3 {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .stat-card .value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #333;
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e3c72;
         }
 
         .personnel-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
             margin-bottom: 30px;
         }
 
         .personnel-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             transition: all 0.3s;
             position: relative;
         }
 
         .personnel-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
         }
 
         .personnel-card input[type="checkbox"] {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 24px;
-            height: 24px;
+            top: 25px;
+            right: 25px;
+            width: 26px;
+            height: 26px;
             cursor: pointer;
+            accent-color: #2a5298;
         }
 
         .personnel-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-            padding-right: 40px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 18px;
+            padding-right: 50px;
         }
 
         .personnel-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 18px;
         }
 
         .info-item {
@@ -342,45 +236,49 @@
         }
 
         .info-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .info-value {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 17px;
+            font-weight: 700;
             color: #333;
         }
 
         .salary-highlight {
-            background: linear-gradient(135deg, #2a5298 0%, #7e22ce 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 18px;
         }
 
         .salary-highlight .label {
             font-size: 12px;
             opacity: 0.9;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .salary-highlight .amount {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 700;
         }
 
         .badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         .badge-success {
@@ -398,63 +296,124 @@
             color: #721c24;
         }
 
-        /* CA Deductions Modal */
+        /* CA Deduction Modal */
         .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-        }
-
-        .modal.active {
-            display: flex;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             background: white;
-            padding: 30px;
+            padding: 35px;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 500px;
             width: 90%;
-            max-height: 90vh;
+            max-height: 80vh;
             overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.5);
         }
 
         .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         .modal-header h2 {
             color: #1e3c72;
             font-size: 24px;
-            margin-bottom: 5px;
+            font-weight: 700;
         }
 
-        .modal-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        .close-btn {
             background: none;
             border: none;
-            font-size: 30px;
+            font-size: 32px;
             cursor: pointer;
             color: #999;
+            line-height: 1;
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
         }
 
-        .close-modal:hover {
+        .close-btn:hover {
+            background: #f0f0f0;
             color: #333;
+        }
+
+        .employee-select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .employee-select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+        }
+
+        .deduction-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .deduction-input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+        }
+
+        .preview-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .preview-row.total {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1e3c72;
+            padding-top: 12px;
+            border-top: 2px solid #2a5298;
+            margin-top: 12px;
         }
 
         /* Print Styles */
@@ -513,22 +472,23 @@
         }
 
         .payslip-header h1 {
-            font-size: 16px;
-            margin-bottom: 3px;
+            font-size: 18px;
+            margin-bottom: 5px;
             font-weight: bold;
             letter-spacing: 2px;
         }
 
         .payslip-header p {
             font-size: 10px;
-            margin: 2px 0;
+            margin: 3px 0;
         }
 
         .payslip-period {
             text-align: center;
-            font-size: 11px;
-            margin-bottom: 10px;
+            font-size: 12px;
+            margin-bottom: 15px;
             font-weight: bold;
+            text-decoration: underline;
         }
 
         .payslip-employee-info {
@@ -536,23 +496,20 @@
             justify-content: space-between;
             margin-bottom: 15px;
             font-size: 11px;
-        }
-
-        .employee-name-label {
             font-weight: bold;
         }
 
         .attendance-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin: 15px 0;
             font-size: 9px;
         }
 
         .attendance-table th,
         .attendance-table td {
             border: 1px solid #000;
-            padding: 4px;
+            padding: 5px;
             text-align: center;
         }
 
@@ -562,8 +519,8 @@
         }
 
         .attendance-table .header-row th {
-            font-size: 8px;
-            padding: 3px;
+            font-size: 9px;
+            padding: 4px;
         }
 
         .attendance-table .time-cell {
@@ -571,14 +528,14 @@
         }
 
         .earnings-section {
-            margin-top: 15px;
-            font-size: 10px;
+            margin-top: 20px;
+            font-size: 11px;
         }
 
         .earnings-row {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #ddd;
         }
 
@@ -586,31 +543,28 @@
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
             font-weight: bold;
-            margin-top: 8px;
-            padding: 6px 0;
-            font-size: 11px;
+            margin-top: 10px;
+            padding: 8px 0;
+            font-size: 12px;
         }
 
         .deductions-section {
-            margin-top: 12px;
-            font-size: 10px;
+            margin-top: 15px;
+            font-size: 11px;
         }
 
         .deductions-title {
             font-weight: bold;
             text-decoration: underline;
-            margin-bottom: 5px;
-        }
-
-        .calculation-section {
-            margin-top: 15px;
+            margin-bottom: 8px;
         }
 
         .loading {
             text-align: center;
-            padding: 50px;
+            padding: 60px;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
@@ -630,51 +584,46 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .logout-btn {
+                position: static;
+                width: 100%;
+                margin-top: 15px;
+            }
         }
 
         .no-data {
             text-align: center;
-            padding: 60px;
+            padding: 80px;
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             color: #999;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
         .no-data svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 25px;
             opacity: 0.5;
+        }
+
+        .no-data h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-box">
-            <h2>🔐 Admin Login</h2>
-            <p>Enter your admin credentials to access the payroll dashboard</p>
-            <div class="login-error" id="loginError"></div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="adminCode">Admin Code</label>
-                    <input type="text" id="adminCode" required placeholder="Enter admin code">
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" required placeholder="Enter password">
-                </div>
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Main Dashboard -->
+<!-- Dashboard -->
     <div class="dashboard-container" id="dashboardContainer">
         <div class="header">
             <h1>📊 Payroll Dashboard</h1>
             <p>COLLAB Attendance System - Weekly Payroll Management</p>
-            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
         <div class="controls">
@@ -688,11 +637,11 @@
                 <button class="btn btn-success" onclick="deselectAll()">
                     ✗ Deselect All
                 </button>
-                <button class="btn btn-warning" onclick="openCADeductionModal()">
+                <button class="btn btn-danger" onclick="openCAModal()">
                     💰 CA Deductions
                 </button>
                 <button class="btn btn-download" onclick="downloadPayslips()">
-                    📥 Download Selected (PDF)
+                    📥 Download PDF
                 </button>
             </div>
         </div>
@@ -703,7 +652,7 @@
                 <div class="value" id="totalEmployees">0</div>
             </div>
             <div class="stat-card">
-                <h3>Total Working Hours</h3>
+                <h3>Total Hours</h3>
                 <div class="value" id="totalHours">0</div>
             </div>
             <div class="stat-card">
@@ -722,168 +671,99 @@
     </div>
 
     <!-- CA Deduction Modal -->
-    <div class="modal" id="caDeductionModal">
+    <div class="modal" id="caModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeCADeductionModal()">&times;</button>
             <div class="modal-header">
-                <h2>💰 CA Deduction Management</h2>
-                <p>Add deductions for employees</p>
+                <h2>💰 CA Deduction</h2>
+                <button class="close-btn" onclick="closeCAModal()">&times;</button>
             </div>
-            <div class="modal-error" id="modalError"></div>
-            <form id="caDeductionForm" onsubmit="applyCADeduction(event)">
-                <div class="form-group">
-                    <label for="deductionEmployee">Select Employee</label>
-                    <select id="deductionEmployee" required>
-                        <option value="">-- Select Employee --</option>
-                    </select>
+            <div class="form-group">
+                <label>Select Employee</label>
+                <select class="employee-select" id="caEmployeeSelect" onchange="updateCAPreview()">
+                    <option value="">-- Choose Employee --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Deduction Amount (₱)</label>
+                <input type="number" class="deduction-input" id="caAmount" placeholder="0.00" step="0.01" min="0" oninput="updateCAPreview()">
+            </div>
+            <div class="preview-box" id="caPreview" style="display: none;">
+                <div class="preview-row">
+                    <span>Original Salary:</span>
+                    <span id="originalSalary">₱0.00</span>
                 </div>
-                <div class="form-group">
-                    <label for="deductionAmount">Deduction Amount (₱)</label>
-                    <input type="number" id="deductionAmount" step="0.01" min="0" required placeholder="0.00">
+                <div class="preview-row">
+                    <span>CA Deduction:</span>
+                    <span id="deductionAmount">₱0.00</span>
                 </div>
-                <div class="form-group">
-                    <label for="deductionReason">Reason (Optional)</label>
-                    <input type="text" id="deductionReason" placeholder="e.g., Cash Advance, Loan Payment">
+                <div class="preview-row total">
+                    <span>Net Pay:</span>
+                    <span id="netPay">₱0.00</span>
                 </div>
-                <button type="submit" class="modal-btn">Apply Deduction</button>
-            </form>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="applyCADeduction()">Apply Deduction</button>
         </div>
     </div>
 
-    <!-- Print Container (Hidden, shown only when printing) -->
+    <!-- Print Container -->
     <div class="print-container" id="printContainer"></div>
 
     <script>
         // ================================================================================
-        // ⚠️ CONFIGURATION REQUIRED - UPDATE THIS URL
+        // ⚠️ CONFIGURATION - UPDATE THIS URL
         // ================================================================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLcwgET-iub61ptEjhkjQ9tr1C8K3DKnH4_2csxF4FSZg5rdb726hyIReDymuS7iKG/exec";
         
         let allEmployees = [];
         let filteredEmployees = [];
-        let adminSession = null;
         let caDeductions = {}; // Store CA deductions by employee name
 
-        // Check configuration on load
-        (function checkConfig() {
-            if (APPS_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID')) {
-                console.error('⚠️ CONFIGURATION ERROR: Update APPS_SCRIPT_URL');
-            } else {
-                console.log('✓ Configuration looks good');
-            }
-        })();
-
-        // Login Handler
-        async function handleLogin(event) {
-            event.preventDefault();
-            
-            const adminCode = document.getElementById('adminCode').value.trim();
-            const adminPassword = document.getElementById('adminPassword').value.trim();
-            const errorDiv = document.getElementById('loginError');
-            
-            errorDiv.style.display = 'none';
-            
-            try {
-                // Validate with Apps Script
-                const response = await fetch(APPS_SCRIPT_URL + '?action=validateAdmin&adminId=' + 
-                    encodeURIComponent(adminCode) + '&adminCode=' + encodeURIComponent(adminPassword), {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    adminSession = {
-                        adminId: adminCode,
-                        adminName: result.adminName,
-                        adminCode: adminPassword
-                    };
-                    
-                    // Store in session storage
-                    sessionStorage.setItem('adminSession', JSON.stringify(adminSession));
-                    
-                    // Hide login, show dashboard
-                    document.getElementById('loginModal').style.display = 'none';
-                    document.getElementById('dashboardContainer').style.display = 'block';
-                    
-                    // Initialize dashboard
-                    initDashboard();
-                } else {
-                    errorDiv.textContent = result.message || 'Invalid credentials. Please try again.';
-                    errorDiv.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorDiv.textContent = 'Connection error. Please check your network and try again.';
-                errorDiv.style.display = 'block';
-            }
-        }
-
-        // Logout
-        function logout() {
-            sessionStorage.removeItem('adminSession');
-            adminSession = null;
-            document.getElementById('loginModal').style.display = 'flex';
-            document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('loginForm').reset();
-        }
-
-        // Check session on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            const storedSession = sessionStorage.getItem('adminSession');
-            if (storedSession) {
-                try {
-                    adminSession = JSON.parse(storedSession);
-                    document.getElementById('loginModal').style.display = 'none';
-                    document.getElementById('dashboardContainer').style.display = 'block';
-                    initDashboard();
-                } catch (e) {
-                    console.error('Session restore error:', e);
-                    logout();
-                }
-            }
+        // Initialize dashboard on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
         });
 
         // Initialize dashboard
         async function initDashboard() {
             try {
                 const grid = document.getElementById('personnelGrid');
-                grid.innerHTML = '<div class="loading" style="color: #333;">Loading payroll data from Google Sheets...</div>';
+                grid.innerHTML = '<div class="loading">Loading payroll data from Google Sheets...</div>';
                 
                 const response = await fetch(APPS_SCRIPT_URL + '?action=getPayrollData', {
                     method: 'GET',
                     mode: 'cors'
                 });
                 
-                const result = await response.json();
-                
-                if (result.success && result.data && result.data.length > 0) {
-                    allEmployees = result.data;
-                    filteredEmployees = [...allEmployees];
-                    renderEmployees();
-                    updateStats();
-                    populateEmployeeDropdown();
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    if (result.success && result.data && result.data.length > 0) {
+                        allEmployees = result.data;
+                        filteredEmployees = [...allEmployees];
+                        renderEmployees();
+                        updateStats();
+                        populateCAEmployeeSelect();
+                    } else {
+                        throw new Error('No payroll data found');
+                    }
                 } else {
-                    showError('No payroll data found in Google Sheets');
-                    loadSampleData();
+                    throw new Error('Failed to fetch data');
                 }
-                
             } catch (error) {
-                console.error('Error fetching payroll data:', error);
-                showError('Failed to connect to Google Sheets. Using sample data.');
+                console.error('Error:', error);
+                showError('Failed to load data. Using sample data.');
                 loadSampleData();
             }
         }
 
-        // Fallback sample data
+        // Load sample data
         function loadSampleData() {
             allEmployees = [
                 {
                     name: "Ray An Rubio",
                     perDayRate: 666.67,
-                    perHourRate: 83.33,
-                    overtimeRate: 108.33,
+                    perHourRate: 83.33375,
+                    overtimeRate: 108.33387,
                     workingHours: 40.00,
                     workingDays: 5,
                     overtimeHours: 2.50,
@@ -897,22 +777,21 @@
             filteredEmployees = [...allEmployees];
             renderEmployees();
             updateStats();
-            populateEmployeeDropdown();
+            populateCAEmployeeSelect();
         }
 
-        // Show error message
+        // Show error
         function showError(message) {
             const grid = document.getElementById('personnelGrid');
             grid.innerHTML = `
                 <div class="no-data">
-                    <h3>Error</h3>
+                    <h3>⚠️ Error</h3>
                     <p>${message}</p>
-                    <p style="margin-top: 10px;">Loading sample data instead...</p>
                 </div>
             `;
         }
 
-        // Render employee cards
+        // Render employees
         function renderEmployees() {
             const grid = document.getElementById('personnelGrid');
             
@@ -927,9 +806,7 @@
             }
 
             grid.innerHTML = filteredEmployees.map((emp, index) => {
-                const deduction = caDeductions[emp.name] || 0;
-                const netPay = emp.finalSalary - deduction;
-                
+                const netSalary = emp.finalSalary - (caDeductions[emp.name] || 0);
                 return `
                     <div class="personnel-card">
                         <input type="checkbox" class="employee-checkbox" data-index="${index}" onchange="updateSelectionCount()">
@@ -952,14 +829,14 @@
                                 <span class="info-value">₱${(emp.perDayRate || 0).toFixed(2)}</span>
                             </div>
                         </div>
-                        ${deduction > 0 ? `
-                        <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px;">
-                            <strong>CA Deduction:</strong> ₱${deduction.toFixed(2)}
+                        ${caDeductions[emp.name] ? `
+                        <div style="background: #fff3cd; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px;">
+                            <strong>CA Deduction: ₱${caDeductions[emp.name].toFixed(2)}</strong>
                         </div>
                         ` : ''}
                         <div class="salary-highlight">
-                            <div class="label">${deduction > 0 ? 'Net Pay (After Deduction)' : 'Weekly Salary'}</div>
-                            <div class="amount">₱${netPay.toLocaleString('en-PH', {minimumFractionDigits: 2})}</div>
+                            <div class="label">${caDeductions[emp.name] ? 'Net Pay' : 'Weekly Salary'}</div>
+                            <div class="amount">₱${netSalary.toLocaleString('en-PH', {minimumFractionDigits: 2})}</div>
                         </div>
                         ${getStatusBadge(emp)}
                     </div>
@@ -986,8 +863,8 @@
             document.getElementById('totalHours').textContent = totalHours.toFixed(2);
             
             const totalPayroll = allEmployees.reduce((sum, emp) => {
-                const deduction = caDeductions[emp.name] || 0;
-                return sum + (emp.finalSalary - deduction);
+                const netSalary = emp.finalSalary - (caDeductions[emp.name] || 0);
+                return sum + netSalary;
             }, 0);
             document.getElementById('totalPayroll').textContent = '₱' + totalPayroll.toLocaleString('en-PH', {minimumFractionDigits: 2});
             
@@ -1000,13 +877,13 @@
             document.getElementById('selectedCount').textContent = selected;
         }
 
-        // Select all employees
+        // Select all
         function selectAll() {
             document.querySelectorAll('.employee-checkbox').forEach(cb => cb.checked = true);
             updateSelectionCount();
         }
 
-        // Deselect all employees
+        // Deselect all
         function deselectAll() {
             document.querySelectorAll('.employee-checkbox').forEach(cb => cb.checked = false);
             updateSelectionCount();
@@ -1021,20 +898,21 @@
             renderEmployees();
         });
 
-        // CA Deduction Modal Functions
-        function openCADeductionModal() {
-            document.getElementById('caDeductionModal').classList.add('active');
+        // CA Modal functions
+        function openCAModal() {
+            document.getElementById('caModal').style.display = 'flex';
         }
 
-        function closeCADeductionModal() {
-            document.getElementById('caDeductionModal').classList.remove('active');
-            document.getElementById('caDeductionForm').reset();
-            document.getElementById('modalError').style.display = 'none';
+        function closeCAModal() {
+            document.getElementById('caModal').style.display = 'none';
+            document.getElementById('caEmployeeSelect').value = '';
+            document.getElementById('caAmount').value = '';
+            document.getElementById('caPreview').style.display = 'none';
         }
 
-        function populateEmployeeDropdown() {
-            const select = document.getElementById('deductionEmployee');
-            select.innerHTML = '<option value="">-- Select Employee --</option>';
+        function populateCAEmployeeSelect() {
+            const select = document.getElementById('caEmployeeSelect');
+            select.innerHTML = '<option value="">-- Choose Employee --</option>';
             
             allEmployees.forEach(emp => {
                 const option = document.createElement('option');
@@ -1044,44 +922,66 @@
             });
         }
 
-        function applyCADeduction(event) {
-            event.preventDefault();
-            
-            const employeeName = document.getElementById('deductionEmployee').value;
-            const amount = parseFloat(document.getElementById('deductionAmount').value);
-            const reason = document.getElementById('deductionReason').value;
+        function updateCAPreview() {
+            const employeeName = document.getElementById('caEmployeeSelect').value;
+            const amount = parseFloat(document.getElementById('caAmount').value) || 0;
             
             if (!employeeName || amount <= 0) {
-                document.getElementById('modalError').textContent = 'Please select an employee and enter a valid amount.';
-                document.getElementById('modalError').style.display = 'block';
+                document.getElementById('caPreview').style.display = 'none';
                 return;
             }
             
-            // Store the deduction
-            caDeductions[employeeName] = (caDeductions[employeeName] || 0) + amount;
+            const employee = allEmployees.find(emp => emp.name === employeeName);
+            if (!employee) return;
             
-            // Update display
-            renderEmployees();
-            updateStats();
+            const originalSalary = employee.finalSalary;
+            const netPay = originalSalary - amount;
             
-            // Close modal
-            closeCADeductionModal();
-            
-            // Show success message
-            alert(`CA Deduction of ₱${amount.toFixed(2)} applied to ${employeeName}${reason ? ' - ' + reason : ''}`);
+            document.getElementById('originalSalary').textContent = '₱' + originalSalary.toFixed(2);
+            document.getElementById('deductionAmount').textContent = '₱' + amount.toFixed(2);
+            document.getElementById('netPay').textContent = '₱' + netPay.toFixed(2);
+            document.getElementById('caPreview').style.display = 'block';
         }
 
-        // Download payslips as PDF
+        function applyCADeduction() {
+            const employeeName = document.getElementById('caEmployeeSelect').value;
+            const amount = parseFloat(document.getElementById('caAmount').value) || 0;
+            
+            if (!employeeName) {
+                alert('Please select an employee');
+                return;
+            }
+            
+            if (amount <= 0) {
+                alert('Please enter a valid deduction amount');
+                return;
+            }
+            
+            const employee = allEmployees.find(emp => emp.name === employeeName);
+            if (amount > employee.finalSalary) {
+                alert('Deduction amount cannot exceed the employee salary!');
+                return;
+            }
+            
+            caDeductions[employeeName] = amount;
+            renderEmployees();
+            updateStats();
+            closeCAModal();
+            
+            alert(`CA Deduction of ₱${amount.toFixed(2)} applied to ${employeeName}`);
+        }
+
+        // Download payslips
         async function downloadPayslips() {
             const checkboxes = document.querySelectorAll('.employee-checkbox:checked');
             
             if (checkboxes.length === 0) {
-                alert('Please select at least one employee to download payslips.');
+                alert('Please select at least one employee');
                 return;
             }
 
             const printContainer = document.getElementById('printContainer');
-            printContainer.innerHTML = '<div class="loading" style="color: #333;">Loading attendance data...</div>';
+            printContainer.innerHTML = '<div class="loading" style="color: #333;">Generating payslips...</div>';
 
             try {
                 const payslipsHtml = [];
@@ -1103,7 +1003,7 @@
                             }
                         }
                     } catch (error) {
-                        console.error('Error fetching attendance for ' + employee.name + ':', error);
+                        console.error('Error fetching attendance:', error);
                     }
                     
                     payslipsHtml.push(generatePayslip(employee));
@@ -1113,13 +1013,13 @@
                 setTimeout(() => window.print(), 500);
                 
             } catch (error) {
-                console.error('Error generating payslips:', error);
-                alert('Error generating payslips. Please try again.');
+                console.error('Error:', error);
+                alert('Error generating payslips');
                 printContainer.innerHTML = '';
             }
         }
 
-        // Generate individual payslip HTML
+        // Generate payslip
         function generatePayslip(emp) {
             const formatDate = (dateStr) => {
                 if (!dateStr) return 'N/A';
@@ -1130,17 +1030,15 @@
             
             const weekDates = emp.dates || getWeekDates(emp.weekStart);
             const dailyRecords = emp.dailyRecords || [];
-            const caDeduction = caDeductions[emp.name] || 0;
-            const netPay = emp.finalSalary - caDeduction;
             
             let attendanceRows = '';
             if (dailyRecords.length > 0) {
                 attendanceRows = `
                     <tr>
-                        <td style="text-align: left;">${emp.name}</td>
+                        <td style="text-align: left; font-weight: bold;">${emp.name}</td>
                         ${dailyRecords.map((day, idx) => {
                             if (idx === 6) {
-                                return `<td><strong>Total days: ${emp.workingDays || 0}</strong></td>`;
+                                return `<td><strong>Total: ${emp.workingDays || 0} days</strong></td>`;
                             }
                             if (day.clockIn === '-' && day.clockOut === '-') {
                                 return '<td class="time-cell">-<br/>-</td>';
@@ -1152,17 +1050,20 @@
             } else {
                 attendanceRows = `
                     <tr>
-                        <td style="text-align: left;">${emp.name}</td>
+                        <td style="text-align: left; font-weight: bold;">${emp.name}</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
-                        <td><strong>Total days: ${emp.workingDays || 0}</strong></td>
+                        <td><strong>Total: ${emp.workingDays || 0} days</strong></td>
                     </tr>
                 `;
             }
+            
+            const caDeduction = caDeductions[emp.name] || 0;
+            const netPay = emp.finalSalary - caDeduction;
             
             return `
                 <div class="payslip">
@@ -1175,73 +1076,77 @@
                     <div class="payslip-period">WEEKLY PAYSLIP</div>
 
                     <div class="payslip-employee-info">
-                        <div class="employee-name-label">${emp.name}</div>
-                        <div>Period: ${emp.weekStart || 'N/A'}</div>
+                        <div><strong>Employee:</strong> ${emp.name}</div>
+                        <div><strong>Period:</strong> ${emp.weekStart || 'N/A'}</div>
                     </div>
 
                     <table class="attendance-table">
                         <thead>
                             <tr class="header-row">
                                 <th>Name</th>
-                                <th>M<br/>${formatDate(weekDates[0])}</th>
-                                <th>T<br/>${formatDate(weekDates[1])}</th>
-                                <th>W<br/>${formatDate(weekDates[2])}</th>
-                                <th>TH<br/>${formatDate(weekDates[3])}</th>
-                                <th>F<br/>${formatDate(weekDates[4])}</th>
-                                <th>SA<br/>${formatDate(weekDates[5])}</th>
-                                <th>SUN<br/>${formatDate(weekDates[6])}</th>
+                                <th>MON<br/><span class="time-cell">${formatDate(weekDates[0])}</span></th>
+                                <th>TUE<br/><span class="time-cell">${formatDate(weekDates[1])}</span></th>
+                                <th>WED<br/><span class="time-cell">${formatDate(weekDates[2])}</span></th>
+                                <th>THU<br/><span class="time-cell">${formatDate(weekDates[3])}</span></th>
+                                <th>FRI<br/><span class="time-cell">${formatDate(weekDates[4])}</span></th>
+                                <th>SAT<br/><span class="time-cell">${formatDate(weekDates[5])}</span></th>
+                                <th>SUN<br/><span class="time-cell">${formatDate(weekDates[6])}</span></th>
                             </tr>
                         </thead>
                         <tbody>
                             ${attendanceRows}
-                            <tr>
-                                <td colspan="8" style="text-align: right; font-weight: bold; padding: 8px;">
-                                    Overtime Hours: ${(emp.overtimeHours || 0).toFixed(2)} hrs
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
 
-                    <div class="calculation-section">
-                        <div class="earnings-section">
-                            <div class="earnings-row">
-                                <span><strong>Days Worked:</strong> ${emp.workingDays || 0} × ₱${(emp.perDayRate || 0).toFixed(2)}</span>
-                                <span><strong>₱${(emp.regularSalary || 0).toFixed(2)}</strong></span>
-                            </div>
-                            <div class="earnings-row">
-                                <span><strong>Overtime:</strong> ${(emp.overtimeHours || 0).toFixed(2)} hrs × ₱${(emp.overtimeRate || 0).toFixed(2)}</span>
-                                <span><strong>₱${(emp.overtimeFee || 0).toFixed(2)}</strong></span>
-                            </div>
-                            <div class="earnings-row total">
-                                <span>GROSS PAY</span>
-                                <span>₱${(emp.finalSalary || 0).toFixed(2)}</span>
-                            </div>
+                    <div class="earnings-section">
+                        <div class="earnings-row">
+                            <span><strong>Working Days:</strong></span>
+                            <span>${emp.workingDays || 0} days</span>
                         </div>
-
-                        ${caDeduction > 0 ? `
-                        <div class="deductions-section">
-                            <div class="deductions-title">Less: Deductions</div>
-                            <div class="earnings-row">
-                                <span>Cash Advance (CA)</span>
-                                <span>₱${caDeduction.toFixed(2)}</span>
-                            </div>
-                            <div class="earnings-row total">
-                                <span>NET PAY</span>
-                                <span>₱${netPay.toFixed(2)}</span>
-                            </div>
+                        <div class="earnings-row">
+                            <span><strong>Daily Rate:</strong></span>
+                            <span>₱${(emp.perDayRate || 0).toFixed(2)}</span>
                         </div>
-                        ` : `
-                        <div class="earnings-row total" style="margin-top: 15px;">
-                            <span>NET PAY</span>
+                        <div class="earnings-row">
+                            <span><strong>Regular Salary:</strong></span>
+                            <span>₱${(emp.regularSalary || 0).toFixed(2)}</span>
+                        </div>
+                        <div class="earnings-row">
+                            <span><strong>Overtime (${(emp.overtimeHours || 0).toFixed(2)} hrs × ₱${(emp.overtimeRate || 0).toFixed(2)}):</strong></span>
+                            <span>₱${(emp.overtimeFee || 0).toFixed(2)}</span>
+                        </div>
+                        <div class="earnings-row total">
+                            <span>GROSS PAY:</span>
                             <span>₱${(emp.finalSalary || 0).toFixed(2)}</span>
                         </div>
-                        `}
+                    </div>
+
+                    <div class="deductions-section">
+                        <div class="deductions-title">DEDUCTIONS:</div>
+                        <div class="earnings-row">
+                            <span>CA Deduction:</span>
+                            <span>₱${caDeduction.toFixed(2)}</span>
+                        </div>
+                        <div class="earnings-row total">
+                            <span>NET PAY:</span>
+                            <span>₱${netPay.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; padding-top: 15px; border-top: 2px solid #000; display: flex; justify-content: space-between; font-size: 10px;">
+                        <div style="text-align: center;">
+                            <div style="margin-bottom: 20px;">_______________________</div>
+                            <div><strong>Employee Signature</strong></div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="margin-bottom: 20px;">_______________________</div>
+                            <div><strong>Authorized By</strong></div>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
-        // Helper function to get week dates
         function getWeekDates(weekStart) {
             if (!weekStart) return [];
             
