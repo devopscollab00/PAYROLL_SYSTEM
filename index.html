@@ -425,6 +425,7 @@
             body {
                 background: white;
                 padding: 0;
+                margin: 0;
             }
 
             .dashboard-container,
@@ -432,7 +433,6 @@
             .controls,
             .stats-grid,
             .personnel-grid,
-            .login-modal,
             .modal {
                 display: none !important;
             }
@@ -441,27 +441,152 @@
                 display: block !important;
             }
 
-            .payslip {
-                page-break-after: always;
-                padding: 15mm;
-                width: 210mm;
-                min-height: 148mm;
-                margin: 0;
+            @page {
+                size: A4 landscape;
+                margin: 5mm;
             }
 
-            .payslip:last-child {
+            .payslip-page {
+                page-break-after: always;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                gap: 3mm;
+                width: 100%;
+                height: 100vh;
+            }
+
+            .payslip-page:last-child {
                 page-break-after: auto;
+            }
+
+            .payslip {
+                background: white;
+                padding: 2mm;
+                width: 100%;
+                height: 100%;
+                border: 1px solid #000;
+                font-family: 'Courier New', monospace;
+                font-size: 5.5px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .payslip-header {
+                text-align: center;
+                border-bottom: 1px solid #000;
+                padding-bottom: 1mm;
+                margin-bottom: 1mm;
+            }
+
+            .payslip-header h1 {
+                font-size: 7px;
+                margin-bottom: 0.5mm;
+                font-weight: bold;
+                letter-spacing: 0.5px;
+            }
+
+            .payslip-header p {
+                font-size: 5px;
+                margin: 0.5mm 0;
+            }
+
+            .payslip-period {
+                text-align: center;
+                font-size: 6px;
+                margin-bottom: 1mm;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+
+            .payslip-employee-info {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1mm;
+                font-size: 5.5px;
+                font-weight: bold;
+            }
+
+            .attendance-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1mm 0;
+                font-size: 5px;
+            }
+
+            .attendance-table th,
+            .attendance-table td {
+                border: 0.5px solid #000;
+                padding: 0.5mm;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .attendance-table th:first-child,
+            .attendance-table td:first-child {
+                text-align: left;
+                padding-left: 1mm;
+                font-size: 5px;
+            }
+
+            .attendance-table th {
+                background: #f0f0f0;
+                font-weight: bold;
+            }
+
+            .attendance-table .header-row th {
+                font-size: 5px;
+                padding: 0.5mm;
+            }
+
+            .attendance-table .time-cell {
+                font-size: 4.5px;
+                line-height: 1.2;
+            }
+
+            .earnings-section {
+                margin-top: 1mm;
+                font-size: 5.5px;
+            }
+
+            .earnings-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5mm 0;
+                border-bottom: 0.5px solid #ddd;
+            }
+
+            .earnings-row.total {
+                border-top: 1px solid #000;
+                border-bottom: 1px solid #000;
+                font-weight: bold;
+                margin-top: 1mm;
+                padding: 1mm 0;
+                font-size: 6px;
+            }
+
+            .deductions-section {
+                margin-top: 1mm;
+                font-size: 5.5px;
+            }
+
+            .deductions-title {
+                font-weight: bold;
+                text-decoration: underline;
+                margin-bottom: 0.5mm;
             }
         }
 
         .payslip {
             background: white;
-            padding: 30px;
-            max-width: 210mm;
+            padding: 20px;
+            max-width: 100%;
             margin: 0 auto 30px;
             border: 2px solid #000;
             font-family: 'Courier New', monospace;
-            font-size: 11px;
+            font-size: 9px;
         }
 
         .payslip-header {
@@ -509,8 +634,16 @@
         .attendance-table th,
         .attendance-table td {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 6px 4px;
             text-align: center;
+            vertical-align: middle;
+        }
+
+        .attendance-table th:first-child,
+        .attendance-table td:first-child {
+            text-align: left;
+            padding-left: 8px;
+            min-width: 120px;
         }
 
         .attendance-table th {
@@ -520,11 +653,12 @@
 
         .attendance-table .header-row th {
             font-size: 9px;
-            padding: 4px;
+            padding: 6px 4px;
         }
 
         .attendance-table .time-cell {
             font-size: 8px;
+            line-height: 1.3;
         }
 
         .earnings-section {
@@ -985,6 +1119,7 @@
 
             try {
                 const payslipsHtml = [];
+                const selectedEmployees = [];
                 
                 for (const checkbox of checkboxes) {
                     const index = parseInt(checkbox.dataset.index);
@@ -1006,10 +1141,18 @@
                         console.error('Error fetching attendance:', error);
                     }
                     
-                    payslipsHtml.push(generatePayslip(employee));
+                    selectedEmployees.push(employee);
                 }
                 
-                printContainer.innerHTML = payslipsHtml.join('');
+                // Group payslips into pages of 8
+                let pageHtml = '';
+                for (let i = 0; i < selectedEmployees.length; i += 8) {
+                    const pageEmployees = selectedEmployees.slice(i, i + 8);
+                    const payslipsInPage = pageEmployees.map(emp => generatePayslip(emp)).join('');
+                    pageHtml += `<div class="payslip-page">${payslipsInPage}</div>`;
+                }
+                
+                printContainer.innerHTML = pageHtml;
                 setTimeout(() => window.print(), 500);
                 
             } catch (error) {
@@ -1035,10 +1178,10 @@
             if (dailyRecords.length > 0) {
                 attendanceRows = `
                     <tr>
-                        <td style="text-align: left; font-weight: bold;">${emp.name}</td>
+                        <td style="text-align: left; font-weight: bold; padding-left: 1mm;">${emp.name}</td>
                         ${dailyRecords.map((day, idx) => {
                             if (idx === 6) {
-                                return `<td><strong>Total: ${emp.workingDays || 0} days</strong></td>`;
+                                return `<td style="font-weight: bold;">Tot: ${emp.workingDays || 0}</td>`;
                             }
                             if (day.clockIn === '-' && day.clockOut === '-') {
                                 return '<td class="time-cell">-<br/>-</td>';
@@ -1050,47 +1193,48 @@
             } else {
                 attendanceRows = `
                     <tr>
-                        <td style="text-align: left; font-weight: bold;">${emp.name}</td>
+                        <td style="text-align: left; font-weight: bold; padding-left: 1mm;">${emp.name}</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
-                        <td><strong>Total: ${emp.workingDays || 0} days</strong></td>
+                        <td style="font-weight: bold;">Tot: ${emp.workingDays || 0}</td>
                     </tr>
                 `;
             }
             
             const caDeduction = caDeductions[emp.name] || 0;
-            const netPay = emp.finalSalary - caDeduction;
+            const grossPay = emp.finalSalary;
+            const netPay = grossPay - caDeduction;
             
             return `
                 <div class="payslip">
                     <div class="payslip-header">
                         <h1>COLLAB PRINTING AND GRAPHIC DESIGN</h1>
-                        <p>Rosario, Jhon Lloyd Dioso, Tologonon</p>
+                        <p>377 Manggahan St. Crossing Bayabas Toril Davao City</p>
                         <p>${emp.weekStart || 'N/A'} to ${emp.weekEnd || 'N/A'}</p>
                     </div>
 
                     <div class="payslip-period">WEEKLY PAYSLIP</div>
 
                     <div class="payslip-employee-info">
-                        <div><strong>Employee:</strong> ${emp.name}</div>
-                        <div><strong>Period:</strong> ${emp.weekStart || 'N/A'}</div>
+                        <div>${emp.name}</div>
+                        <div>${emp.weekStart || 'N/A'}</div>
                     </div>
 
                     <table class="attendance-table">
                         <thead>
                             <tr class="header-row">
-                                <th>Name</th>
-                                <th>MON<br/><span class="time-cell">${formatDate(weekDates[0])}</span></th>
-                                <th>TUE<br/><span class="time-cell">${formatDate(weekDates[1])}</span></th>
-                                <th>WED<br/><span class="time-cell">${formatDate(weekDates[2])}</span></th>
-                                <th>THU<br/><span class="time-cell">${formatDate(weekDates[3])}</span></th>
-                                <th>FRI<br/><span class="time-cell">${formatDate(weekDates[4])}</span></th>
-                                <th>SAT<br/><span class="time-cell">${formatDate(weekDates[5])}</span></th>
-                                <th>SUN<br/><span class="time-cell">${formatDate(weekDates[6])}</span></th>
+                                <th style="text-align: left; padding-left: 1mm;">Name</th>
+                                <th>M<br/><span class="time-cell">${formatDate(weekDates[0])}</span></th>
+                                <th>T<br/><span class="time-cell">${formatDate(weekDates[1])}</span></th>
+                                <th>W<br/><span class="time-cell">${formatDate(weekDates[2])}</span></th>
+                                <th>Th<br/><span class="time-cell">${formatDate(weekDates[3])}</span></th>
+                                <th>F<br/><span class="time-cell">${formatDate(weekDates[4])}</span></th>
+                                <th>Sa<br/><span class="time-cell">${formatDate(weekDates[5])}</span></th>
+                                <th>Su<br/><span class="time-cell">${formatDate(weekDates[6])}</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1100,47 +1244,36 @@
 
                     <div class="earnings-section">
                         <div class="earnings-row">
-                            <span><strong>Working Days:</strong></span>
-                            <span>${emp.workingDays || 0} days</span>
+                            <span>Days:</span>
+                            <span>${emp.workingDays || 0}</span>
                         </div>
                         <div class="earnings-row">
-                            <span><strong>Daily Rate:</strong></span>
+                            <span>Rate:</span>
                             <span>₱${(emp.perDayRate || 0).toFixed(2)}</span>
                         </div>
                         <div class="earnings-row">
-                            <span><strong>Regular Salary:</strong></span>
+                            <span>Regular:</span>
                             <span>₱${(emp.regularSalary || 0).toFixed(2)}</span>
                         </div>
                         <div class="earnings-row">
-                            <span><strong>Overtime (${(emp.overtimeHours || 0).toFixed(2)} hrs × ₱${(emp.overtimeRate || 0).toFixed(2)}):</strong></span>
+                            <span>OT (${(emp.overtimeHours || 0).toFixed(2)}h):</span>
                             <span>₱${(emp.overtimeFee || 0).toFixed(2)}</span>
                         </div>
                         <div class="earnings-row total">
-                            <span>GROSS PAY:</span>
-                            <span>₱${(emp.finalSalary || 0).toFixed(2)}</span>
+                            <span>GROSS:</span>
+                            <span>₱${grossPay.toFixed(2)}</span>
                         </div>
                     </div>
 
                     <div class="deductions-section">
                         <div class="deductions-title">DEDUCTIONS:</div>
                         <div class="earnings-row">
-                            <span>CA Deduction:</span>
+                            <span>CA:</span>
                             <span>₱${caDeduction.toFixed(2)}</span>
                         </div>
                         <div class="earnings-row total">
                             <span>NET PAY:</span>
                             <span>₱${netPay.toFixed(2)}</span>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 30px; padding-top: 15px; border-top: 2px solid #000; display: flex; justify-content: space-between; font-size: 10px;">
-                        <div style="text-align: center;">
-                            <div style="margin-bottom: 20px;">_______________________</div>
-                            <div><strong>Employee Signature</strong></div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="margin-bottom: 20px;">_______________________</div>
-                            <div><strong>Authorized By</strong></div>
                         </div>
                     </div>
                 </div>
