@@ -13,14 +13,118 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h2 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .login-btn, .modal-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover, .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(42, 82, 152, 0.4);
+        }
+
+        .login-error, .modal-error {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Main Dashboard - Hidden until logged in */
         .dashboard-container {
             max-width: 1400px;
             margin: 0 auto;
+            display: none;
         }
 
         .header {
@@ -29,10 +133,11 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             margin-bottom: 30px;
+            position: relative;
         }
 
         .header h1 {
-            color: #667eea;
+            color: #1e3c72;
             font-size: 32px;
             margin-bottom: 10px;
         }
@@ -40,6 +145,23 @@
         .header p {
             color: #666;
             font-size: 16px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
         }
 
         .controls {
@@ -73,8 +195,8 @@
 
         .search-box input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
         }
 
         .btn {
@@ -91,13 +213,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.4);
         }
 
         .btn-success {
@@ -118,6 +240,16 @@
         .btn-download:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(247, 151, 30, 0.4);
         }
 
         .stats-grid {
@@ -143,7 +275,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2a5298 0%, #7e22ce 100%);
         }
 
         .stat-card h3 {
@@ -223,7 +355,7 @@
         }
 
         .salary-highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2a5298 0%, #7e22ce 100%);
             color: white;
             padding: 15px;
             border-radius: 10px;
@@ -266,6 +398,65 @@
             color: #721c24;
         }
 
+        /* CA Deductions Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
         /* Print Styles */
         .print-container {
             display: none;
@@ -281,7 +472,9 @@
             .header,
             .controls,
             .stats-grid,
-            .personnel-grid {
+            .personnel-grid,
+            .login-modal,
+            .modal {
                 display: none !important;
             }
 
@@ -409,11 +602,8 @@
             margin-bottom: 5px;
         }
 
-        .calculation-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 10px;
+        .calculation-section {
+            margin-top: 15px;
         }
 
         .loading {
@@ -459,10 +649,32 @@
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2>🔐 Admin Login</h2>
+            <p>Enter your admin credentials to access the payroll dashboard</p>
+            <div class="login-error" id="loginError"></div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="adminCode">Admin Code</label>
+                    <input type="text" id="adminCode" required placeholder="Enter admin code">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container" id="dashboardContainer">
         <div class="header">
             <h1>📊 Payroll Dashboard</h1>
             <p>COLLAB Attendance System - Weekly Payroll Management</p>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
         <div class="controls">
@@ -475,6 +687,9 @@
                 </button>
                 <button class="btn btn-success" onclick="deselectAll()">
                     ✗ Deselect All
+                </button>
+                <button class="btn btn-warning" onclick="openCADeductionModal()">
+                    💰 CA Deductions
                 </button>
                 <button class="btn btn-download" onclick="downloadPayslips()">
                     📥 Download Selected (PDF)
@@ -506,6 +721,35 @@
         </div>
     </div>
 
+    <!-- CA Deduction Modal -->
+    <div class="modal" id="caDeductionModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeCADeductionModal()">&times;</button>
+            <div class="modal-header">
+                <h2>💰 CA Deduction Management</h2>
+                <p>Add deductions for employees</p>
+            </div>
+            <div class="modal-error" id="modalError"></div>
+            <form id="caDeductionForm" onsubmit="applyCADeduction(event)">
+                <div class="form-group">
+                    <label for="deductionEmployee">Select Employee</label>
+                    <select id="deductionEmployee" required>
+                        <option value="">-- Select Employee --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deductionAmount">Deduction Amount (₱)</label>
+                    <input type="number" id="deductionAmount" step="0.01" min="0" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="deductionReason">Reason (Optional)</label>
+                    <input type="text" id="deductionReason" placeholder="e.g., Cash Advance, Loan Payment">
+                </div>
+                <button type="submit" class="modal-btn">Apply Deduction</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Print Container (Hidden, shown only when printing) -->
     <div class="print-container" id="printContainer"></div>
 
@@ -513,134 +757,133 @@
         // ================================================================================
         // ⚠️ CONFIGURATION REQUIRED - UPDATE THIS URL
         // ================================================================================
-        // Replace YOUR_DEPLOYMENT_ID with your actual Apps Script Web App deployment ID
-        // 
-        // To get this URL:
-        // 1. Go to your Apps Script editor
-        // 2. Click Deploy > New deployment
-        // 3. Select "Web app" type
-        // 4. Set "Who has access" to "Anyone"
-        // 5. Copy the Web App URL that ends with "/exec"
-        // 
-        // Example: https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxx/exec
-        // ================================================================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLcwgET-iub61ptEjhkjQ9tr1C8K3DKnH4_2csxF4FSZg5rdb726hyIReDymuS7iKG/exec";
-        
-        // Configuration checker
-        (function checkConfig() {
-            if (APPS_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID')) {
-                console.error('⚠️⚠️⚠️ CONFIGURATION ERROR ⚠️⚠️⚠️');
-                console.error('You need to update APPS_SCRIPT_URL in vercel.html');
-                console.error('Current value:', APPS_SCRIPT_URL);
-                console.error('See instructions at the top of the script section');
-                
-                // Show visual warning
-                setTimeout(() => {
-                    const header = document.querySelector('.header');
-                    if (header) {
-                        const warning = document.createElement('div');
-                        warning.style.cssText = 'background: #f44336; color: white; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; font-weight: bold;';
-                        warning.innerHTML = `
-                            <h3 style="margin: 0 0 10px 0;">⚠️ CONFIGURATION REQUIRED</h3>
-                            <p style="margin: 0;">You need to update <code>APPS_SCRIPT_URL</code> in vercel.html with your actual Apps Script deployment URL.</p>
-                            <p style="margin: 10px 0 0 0; font-size: 14px;">Check the browser console (F12) for instructions.</p>
-                        `;
-                        header.appendChild(warning);
-                    }
-                }, 1000);
-            } else {
-                console.log('✓ Configuration looks good');
-                console.log('📡 Apps Script URL:', APPS_SCRIPT_URL);
-                console.log('🔗 Test this URL in your browser:', APPS_SCRIPT_URL + '?action=getPayrollData');
-            }
-        })();
         
         let allEmployees = [];
         let filteredEmployees = [];
+        let adminSession = null;
+        let caDeductions = {}; // Store CA deductions by employee name
+
+        // Check configuration on load
+        (function checkConfig() {
+            if (APPS_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID')) {
+                console.error('⚠️ CONFIGURATION ERROR: Update APPS_SCRIPT_URL');
+            } else {
+                console.log('✓ Configuration looks good');
+            }
+        })();
+
+        // Login Handler
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const adminCode = document.getElementById('adminCode').value.trim();
+            const adminPassword = document.getElementById('adminPassword').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            
+            errorDiv.style.display = 'none';
+            
+            try {
+                // Validate with Apps Script
+                const response = await fetch(APPS_SCRIPT_URL + '?action=validateAdmin&adminId=' + 
+                    encodeURIComponent(adminCode) + '&adminCode=' + encodeURIComponent(adminPassword), {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    adminSession = {
+                        adminId: adminCode,
+                        adminName: result.adminName,
+                        adminCode: adminPassword
+                    };
+                    
+                    // Store in session storage
+                    sessionStorage.setItem('adminSession', JSON.stringify(adminSession));
+                    
+                    // Hide login, show dashboard
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('dashboardContainer').style.display = 'block';
+                    
+                    // Initialize dashboard
+                    initDashboard();
+                } else {
+                    errorDiv.textContent = result.message || 'Invalid credentials. Please try again.';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Connection error. Please check your network and try again.';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.removeItem('adminSession');
+            adminSession = null;
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        // Check session on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const storedSession = sessionStorage.getItem('adminSession');
+            if (storedSession) {
+                try {
+                    adminSession = JSON.parse(storedSession);
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('dashboardContainer').style.display = 'block';
+                    initDashboard();
+                } catch (e) {
+                    console.error('Session restore error:', e);
+                    logout();
+                }
+            }
+        });
 
         // Initialize dashboard
         async function initDashboard() {
             try {
-                // Show loading state
                 const grid = document.getElementById('personnelGrid');
                 grid.innerHTML = '<div class="loading" style="color: #333;">Loading payroll data from Google Sheets...</div>';
                 
-                console.log('📡 Attempting to fetch from:', APPS_SCRIPT_URL);
-                console.log('📡 Full URL:', APPS_SCRIPT_URL + '?action=getPayrollData');
-                
-                // Call Apps Script API to get payroll data
                 const response = await fetch(APPS_SCRIPT_URL + '?action=getPayrollData', {
                     method: 'GET',
-                    mode: 'no-cors', // Try no-cors mode first
-                    redirect: 'follow'
+                    mode: 'cors'
                 });
                 
-                console.log('📡 Response received:', response);
-                console.log('📡 Response status:', response.status);
-                console.log('📡 Response type:', response.type);
+                const result = await response.json();
                 
-                // With no-cors, we can't read the response, so try again with cors
-                if (response.type === 'opaque') {
-                    console.log('⚠️ Got opaque response, trying with CORS mode...');
-                    
-                    const corsResponse = await fetch(APPS_SCRIPT_URL + '?action=getPayrollData', {
-                        method: 'GET',
-                        mode: 'cors'
-                    });
-                    
-                    if (!corsResponse.ok) {
-                        throw new Error('Network response was not ok: ' + corsResponse.status);
-                    }
-                    
-                    const result = await corsResponse.json();
-                    
-                    if (result.success && result.data && result.data.length > 0) {
-                        allEmployees = result.data;
-                        filteredEmployees = [...allEmployees];
-                        renderEmployees();
-                        updateStats();
-                        console.log('✓ Loaded ' + allEmployees.length + ' employees from Google Sheets');
-                    } else {
-                        console.warn('No payroll data returned:', result);
-                        throw new Error('No payroll data found in Google Sheets');
-                    }
+                if (result.success && result.data && result.data.length > 0) {
+                    allEmployees = result.data;
+                    filteredEmployees = [...allEmployees];
+                    renderEmployees();
+                    updateStats();
+                    populateEmployeeDropdown();
                 } else {
-                    const result = await response.json();
-                    
-                    if (result.success && result.data && result.data.length > 0) {
-                        allEmployees = result.data;
-                        filteredEmployees = [...allEmployees];
-                        renderEmployees();
-                        updateStats();
-                        console.log('✓ Loaded ' + allEmployees.length + ' employees from Google Sheets');
-                    } else {
-                        console.warn('No payroll data returned:', result);
-                        throw new Error('No payroll data found in Google Sheets');
-                    }
+                    showError('No payroll data found in Google Sheets');
+                    loadSampleData();
                 }
                 
             } catch (error) {
-                console.error('❌ Error fetching payroll data:', error);
-                console.error('❌ Error details:', error.message);
-                console.error('❌ Please check:');
-                console.error('   1. Apps Script URL is correct');
-                console.error('   2. Apps Script deployed with "Anyone" access');
-                console.error('   3. Using /exec URL (not /dev)');
-                console.error('   4. Test API directly: ' + APPS_SCRIPT_URL + '?action=getPayrollData');
-                
-                showError('Failed to connect to Google Sheets. Using sample data. Error: ' + error.message);
+                console.error('Error fetching payroll data:', error);
+                showError('Failed to connect to Google Sheets. Using sample data.');
                 loadSampleData();
             }
         }
 
-        // Fallback to sample data if Google Sheets connection fails
+        // Fallback sample data
         function loadSampleData() {
             allEmployees = [
                 {
                     name: "Ray An Rubio",
                     perDayRate: 666.67,
-                    perHourRate: 83.33375,
-                    overtimeRate: 108.33387,
+                    perHourRate: 83.33,
+                    overtimeRate: 108.33,
                     workingHours: 40.00,
                     workingDays: 5,
                     overtimeHours: 2.50,
@@ -648,43 +891,13 @@
                     overtimeFee: 270.83,
                     finalSalary: 3770.83,
                     weekStart: "2026-08-11",
-                    weekEnd: "2026-08-17",
-                    dates: ["2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17"]
-                },
-                {
-                    name: "Joel Santiago",
-                    perDayRate: 900.00,
-                    perHourRate: 112.5,
-                    overtimeRate: 146.25,
-                    workingHours: 32.00,
-                    workingDays: 4,
-                    overtimeHours: 0.00,
-                    regularSalary: 3600.00,
-                    overtimeFee: 0.00,
-                    finalSalary: 3600.00,
-                    weekStart: "2026-08-11",
-                    weekEnd: "2026-08-17",
-                    dates: ["2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17"]
-                },
-                {
-                    name: "Ray Irwin Rubio",
-                    perDayRate: 916.67,
-                    perHourRate: 114.58375,
-                    overtimeRate: 148.95887,
-                    workingHours: 48.00,
-                    workingDays: 6,
-                    overtimeHours: 5.00,
-                    regularSalary: 5500.02,
-                    overtimeFee: 744.79,
-                    finalSalary: 6244.81,
-                    weekStart: "2026-08-11",
-                    weekEnd: "2026-08-17",
-                    dates: ["2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17"]
+                    weekEnd: "2026-08-17"
                 }
             ];
             filteredEmployees = [...allEmployees];
             renderEmployees();
             updateStats();
+            populateEmployeeDropdown();
         }
 
         // Show error message
@@ -706,9 +919,6 @@
             if (filteredEmployees.length === 0) {
                 grid.innerHTML = `
                     <div class="no-data">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                        </svg>
                         <h3>No employees found</h3>
                         <p>Try adjusting your search criteria</p>
                     </div>
@@ -716,35 +926,45 @@
                 return;
             }
 
-            grid.innerHTML = filteredEmployees.map((emp, index) => `
-                <div class="personnel-card">
-                    <input type="checkbox" class="employee-checkbox" data-index="${index}" onchange="updateSelectionCount()">
-                    <div class="personnel-name">${emp.name}</div>
-                    <div class="personnel-info">
-                        <div class="info-item">
-                            <span class="info-label">Working Days</span>
-                            <span class="info-value">${emp.workingDays || 0} days</span>
+            grid.innerHTML = filteredEmployees.map((emp, index) => {
+                const deduction = caDeductions[emp.name] || 0;
+                const netPay = emp.finalSalary - deduction;
+                
+                return `
+                    <div class="personnel-card">
+                        <input type="checkbox" class="employee-checkbox" data-index="${index}" onchange="updateSelectionCount()">
+                        <div class="personnel-name">${emp.name}</div>
+                        <div class="personnel-info">
+                            <div class="info-item">
+                                <span class="info-label">Working Days</span>
+                                <span class="info-value">${emp.workingDays || 0} days</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Working Hours</span>
+                                <span class="info-value">${(emp.workingHours || 0).toFixed(2)} hrs</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Overtime Hours</span>
+                                <span class="info-value">${(emp.overtimeHours || 0).toFixed(2)} hrs</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Per Day Rate</span>
+                                <span class="info-value">₱${(emp.perDayRate || 0).toFixed(2)}</span>
+                            </div>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Working Hours</span>
-                            <span class="info-value">${emp.workingHours ? emp.workingHours.toFixed(2) : '0.00'} hrs</span>
+                        ${deduction > 0 ? `
+                        <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px;">
+                            <strong>CA Deduction:</strong> ₱${deduction.toFixed(2)}
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Overtime Hours</span>
-                            <span class="info-value">${emp.overtimeHours ? emp.overtimeHours.toFixed(2) : '0.00'} hrs</span>
+                        ` : ''}
+                        <div class="salary-highlight">
+                            <div class="label">${deduction > 0 ? 'Net Pay (After Deduction)' : 'Weekly Salary'}</div>
+                            <div class="amount">₱${netPay.toLocaleString('en-PH', {minimumFractionDigits: 2})}</div>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Per Day Rate</span>
-                            <span class="info-value">₱${emp.perDayRate ? emp.perDayRate.toFixed(2) : '0.00'}</span>
-                        </div>
+                        ${getStatusBadge(emp)}
                     </div>
-                    <div class="salary-highlight">
-                        <div class="label">Weekly Salary</div>
-                        <div class="amount">₱${emp.finalSalary ? emp.finalSalary.toLocaleString('en-PH', {minimumFractionDigits: 2}) : '0.00'}</div>
-                    </div>
-                    ${getStatusBadge(emp)}
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Get status badge
@@ -765,7 +985,10 @@
             const totalHours = allEmployees.reduce((sum, emp) => sum + (emp.workingHours || 0), 0);
             document.getElementById('totalHours').textContent = totalHours.toFixed(2);
             
-            const totalPayroll = allEmployees.reduce((sum, emp) => sum + (emp.finalSalary || 0), 0);
+            const totalPayroll = allEmployees.reduce((sum, emp) => {
+                const deduction = caDeductions[emp.name] || 0;
+                return sum + (emp.finalSalary - deduction);
+            }, 0);
             document.getElementById('totalPayroll').textContent = '₱' + totalPayroll.toLocaleString('en-PH', {minimumFractionDigits: 2});
             
             updateSelectionCount();
@@ -798,6 +1021,56 @@
             renderEmployees();
         });
 
+        // CA Deduction Modal Functions
+        function openCADeductionModal() {
+            document.getElementById('caDeductionModal').classList.add('active');
+        }
+
+        function closeCADeductionModal() {
+            document.getElementById('caDeductionModal').classList.remove('active');
+            document.getElementById('caDeductionForm').reset();
+            document.getElementById('modalError').style.display = 'none';
+        }
+
+        function populateEmployeeDropdown() {
+            const select = document.getElementById('deductionEmployee');
+            select.innerHTML = '<option value="">-- Select Employee --</option>';
+            
+            allEmployees.forEach(emp => {
+                const option = document.createElement('option');
+                option.value = emp.name;
+                option.textContent = emp.name;
+                select.appendChild(option);
+            });
+        }
+
+        function applyCADeduction(event) {
+            event.preventDefault();
+            
+            const employeeName = document.getElementById('deductionEmployee').value;
+            const amount = parseFloat(document.getElementById('deductionAmount').value);
+            const reason = document.getElementById('deductionReason').value;
+            
+            if (!employeeName || amount <= 0) {
+                document.getElementById('modalError').textContent = 'Please select an employee and enter a valid amount.';
+                document.getElementById('modalError').style.display = 'block';
+                return;
+            }
+            
+            // Store the deduction
+            caDeductions[employeeName] = (caDeductions[employeeName] || 0) + amount;
+            
+            // Update display
+            renderEmployees();
+            updateStats();
+            
+            // Close modal
+            closeCADeductionModal();
+            
+            // Show success message
+            alert(`CA Deduction of ₱${amount.toFixed(2)} applied to ${employeeName}${reason ? ' - ' + reason : ''}`);
+        }
+
         // Download payslips as PDF
         async function downloadPayslips() {
             const checkboxes = document.querySelectorAll('.employee-checkbox:checked');
@@ -813,13 +1086,11 @@
             try {
                 const payslipsHtml = [];
                 
-                // Fetch attendance data for each selected employee
                 for (const checkbox of checkboxes) {
                     const index = parseInt(checkbox.dataset.index);
                     const employee = filteredEmployees[index];
                     
                     try {
-                        // Call Apps Script API to get attendance details
                         const response = await fetch(APPS_SCRIPT_URL + '?action=getEmployeeAttendanceDetails&name=' + encodeURIComponent(employee.name), {
                             method: 'GET',
                             mode: 'cors'
@@ -848,9 +1119,8 @@
             }
         }
 
-        // Generate individual payslip HTML - Matching image format
+        // Generate individual payslip HTML
         function generatePayslip(emp) {
-            // Format dates
             const formatDate = (dateStr) => {
                 if (!dateStr) return 'N/A';
                 const d = new Date(dateStr);
@@ -858,21 +1128,19 @@
                 return months[d.getMonth()] + '-' + d.getDate();
             };
             
-            // Get week dates
             const weekDates = emp.dates || getWeekDates(emp.weekStart);
             const dailyRecords = emp.dailyRecords || [];
+            const caDeduction = caDeductions[emp.name] || 0;
+            const netPay = emp.finalSalary - caDeduction;
             
-            // Generate attendance table rows
             let attendanceRows = '';
             if (dailyRecords.length > 0) {
                 attendanceRows = `
                     <tr>
-                        <td>*</td>
                         <td style="text-align: left;">${emp.name}</td>
-                        <td>RV5</td>
                         ${dailyRecords.map((day, idx) => {
-                            if (idx === 6) { // Sunday - Total column
-                                return `<td>Total<br/>days<br/>${emp.workingDays || 0}</td>`;
+                            if (idx === 6) {
+                                return `<td><strong>Total days: ${emp.workingDays || 0}</strong></td>`;
                             }
                             if (day.clockIn === '-' && day.clockOut === '-') {
                                 return '<td class="time-cell">-<br/>-</td>';
@@ -882,19 +1150,16 @@
                     </tr>
                 `;
             } else {
-                // Fallback if no attendance data
                 attendanceRows = `
                     <tr>
-                        <td>*</td>
                         <td style="text-align: left;">${emp.name}</td>
-                        <td>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
                         <td class="time-cell">-<br/>-</td>
-                        <td>Total<br/>days<br/>${emp.workingDays || 0}</td>
+                        <td><strong>Total days: ${emp.workingDays || 0}</strong></td>
                     </tr>
                 `;
             }
@@ -907,9 +1172,7 @@
                         <p>${emp.weekStart || 'N/A'} to ${emp.weekEnd || 'N/A'}</p>
                     </div>
 
-                    <div class="payslip-period">
-                        WEEKLY PAYSLIP
-                    </div>
+                    <div class="payslip-period">WEEKLY PAYSLIP</div>
 
                     <div class="payslip-employee-info">
                         <div class="employee-name-label">${emp.name}</div>
@@ -919,68 +1182,60 @@
                     <table class="attendance-table">
                         <thead>
                             <tr class="header-row">
-                                <th>*</th>
                                 <th>Name</th>
-                                <th>OS</th>
-                                <th>M<br/><span class="time-cell">${formatDate(weekDates[0])}</span></th>
-                                <th>T<br/><span class="time-cell">${formatDate(weekDates[1])}</span></th>
-                                <th>W<br/><span class="time-cell">${formatDate(weekDates[2])}</span></th>
-                                <th>TH<br/><span class="time-cell">${formatDate(weekDates[3])}</span></th>
-                                <th>F<br/><span class="time-cell">${formatDate(weekDates[4])}</span></th>
-                                <th>SA<br/><span class="time-cell">${formatDate(weekDates[5])}</span></th>
-                                <th>SUN<br/><span class="time-cell">${formatDate(weekDates[6])}</span></th>
+                                <th>M<br/>${formatDate(weekDates[0])}</th>
+                                <th>T<br/>${formatDate(weekDates[1])}</th>
+                                <th>W<br/>${formatDate(weekDates[2])}</th>
+                                <th>TH<br/>${formatDate(weekDates[3])}</th>
+                                <th>F<br/>${formatDate(weekDates[4])}</th>
+                                <th>SA<br/>${formatDate(weekDates[5])}</th>
+                                <th>SUN<br/>${formatDate(weekDates[6])}</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${attendanceRows}
                             <tr>
-                                <td colspan="11" style="text-align: right; font-weight: bold;">OT (hrs): ${emp.overtimeHours ? emp.overtimeHours.toFixed(2) : '0.00'}</td>
+                                <td colspan="8" style="text-align: right; font-weight: bold; padding: 8px;">
+                                    Overtime Hours: ${(emp.overtimeHours || 0).toFixed(2)} hrs
+                                </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <div class="calculation-grid">
+                    <div class="calculation-section">
                         <div class="earnings-section">
                             <div class="earnings-row">
-                                <span># of days</span>
-                                <span>${emp.workingDays || 0}</span>
+                                <span><strong>Days Worked:</strong> ${emp.workingDays || 0} × ₱${(emp.perDayRate || 0).toFixed(2)}</span>
+                                <span><strong>₱${(emp.regularSalary || 0).toFixed(2)}</strong></span>
                             </div>
                             <div class="earnings-row">
-                                <span>× ₱${emp.perDayRate ? emp.perDayRate.toFixed(2) : '0.00'}</span>
-                                <span>₱${emp.regularSalary ? emp.regularSalary.toFixed(2) : '0.00'}</span>
+                                <span><strong>Overtime:</strong> ${(emp.overtimeHours || 0).toFixed(2)} hrs × ₱${(emp.overtimeRate || 0).toFixed(2)}</span>
+                                <span><strong>₱${(emp.overtimeFee || 0).toFixed(2)}</strong></span>
                             </div>
-                            <div class="earnings-row">
-                                <span>OT: ${emp.overtimeHours ? emp.overtimeHours.toFixed(2) : '0.00'} hrs × ₱${emp.overtimeRate ? emp.overtimeRate.toFixed(2) : '0.00'}</span>
-                                <span>₱${emp.overtimeFee ? emp.overtimeFee.toFixed(2) : '0.00'}</span>
-                            </div>
-                        </div>
-
-                        <div class="earnings-section">
                             <div class="earnings-row total">
-                                <span>TOTAL AMOUNT PAID</span>
-                                <span>₱${emp.finalSalary ? emp.finalSalary.toFixed(2) : '0.00'}</span>
+                                <span>GROSS PAY</span>
+                                <span>₱${(emp.finalSalary || 0).toFixed(2)}</span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="deductions-section">
-                        <div class="deductions-title">Less Deductions :</div>
-                        <div class="earnings-row">
-                            <span>CA</span>
-                            <span>₱0.00</span>
+                        ${caDeduction > 0 ? `
+                        <div class="deductions-section">
+                            <div class="deductions-title">Less: Deductions</div>
+                            <div class="earnings-row">
+                                <span>Cash Advance (CA)</span>
+                                <span>₱${caDeduction.toFixed(2)}</span>
+                            </div>
+                            <div class="earnings-row total">
+                                <span>NET PAY</span>
+                                <span>₱${netPay.toFixed(2)}</span>
+                            </div>
                         </div>
-                        <div class="earnings-row">
-                            <span>CA2</span>
-                            <span>₱0.00</span>
-                        </div>
-                        <div class="earnings-row">
-                            <span>Other</span>
-                            <span>₱0.00</span>
-                        </div>
-                        <div class="earnings-row total">
+                        ` : `
+                        <div class="earnings-row total" style="margin-top: 15px;">
                             <span>NET PAY</span>
-                            <span>₱${emp.finalSalary ? emp.finalSalary.toFixed(2) : '0.00'}</span>
+                            <span>₱${(emp.finalSalary || 0).toFixed(2)}</span>
                         </div>
+                        `}
                     </div>
                 </div>
             `;
@@ -1001,9 +1256,6 @@
             
             return dates;
         }
-
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', initDashboard);
     </script>
 </body>
 </html>
