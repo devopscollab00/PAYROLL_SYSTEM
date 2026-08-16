@@ -443,15 +443,14 @@
 
             @page {
                 size: A4 landscape;
-                margin: 8mm;
+                margin: 10mm;
             }
 
             .payslip-page {
                 page-break-after: always;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: 1fr 1fr;
-                gap: 6mm;
+                display: flex;
+                flex-direction: column;
+                gap: 8mm;
                 width: 100%;
                 height: 100vh;
             }
@@ -462,41 +461,40 @@
 
             .payslip {
                 background: white;
-                padding: 4mm;
+                padding: 5mm;
                 width: 100%;
-                height: 100%;
-                border: 1.5px solid #000;
+                flex: 1;
+                border: 2px solid #000;
                 font-family: 'Courier New', monospace;
-                font-size: 7.5px;
+                font-size: 8.5px;
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
-                overflow: hidden;
             }
 
             .payslip-header {
                 text-align: center;
-                border-bottom: 1.5px solid #000;
+                border-bottom: 2px solid #000;
                 padding-bottom: 2mm;
                 margin-bottom: 2mm;
             }
 
             .payslip-header h1 {
-                font-size: 10px;
+                font-size: 12px;
                 margin-bottom: 1mm;
                 font-weight: bold;
-                letter-spacing: 1px;
+                letter-spacing: 1.5px;
             }
 
             .payslip-header p {
-                font-size: 7px;
+                font-size: 8px;
                 margin: 0.5mm 0;
-                line-height: 1.3;
+                line-height: 1.4;
             }
 
             .payslip-period {
                 text-align: center;
-                font-size: 8px;
+                font-size: 9px;
                 margin-bottom: 2mm;
                 font-weight: bold;
                 text-decoration: underline;
@@ -506,7 +504,7 @@
                 display: flex;
                 justify-content: space-between;
                 margin-bottom: 2mm;
-                font-size: 7.5px;
+                font-size: 8.5px;
                 font-weight: bold;
             }
 
@@ -514,13 +512,13 @@
                 width: 100%;
                 border-collapse: collapse;
                 margin: 2mm 0;
-                font-size: 6.5px;
+                font-size: 7.5px;
             }
 
             .attendance-table th,
             .attendance-table td {
-                border: 0.75px solid #000;
-                padding: 1mm 0.5mm;
+                border: 1px solid #000;
+                padding: 1.5mm 0.5mm;
                 text-align: center;
                 vertical-align: middle;
             }
@@ -529,11 +527,8 @@
             .attendance-table td:first-child {
                 text-align: left;
                 padding-left: 2mm;
-                font-size: 7px;
-                max-width: 40mm;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+                font-size: 8px;
+                min-width: 50mm;
             }
 
             .attendance-table th {
@@ -542,51 +537,51 @@
             }
 
             .attendance-table .header-row th {
-                font-size: 6.5px;
-                padding: 1mm 0.5mm;
+                font-size: 7.5px;
+                padding: 1.5mm 0.5mm;
             }
 
             .attendance-table .time-cell {
-                font-size: 6px;
-                line-height: 1.3;
+                font-size: 7px;
+                line-height: 1.4;
             }
 
             .earnings-section {
                 margin-top: 2mm;
-                font-size: 7px;
+                font-size: 8px;
             }
 
             .earnings-row {
                 display: flex;
                 justify-content: space-between;
                 padding: 1mm 0;
-                border-bottom: 0.5px solid #ddd;
+                border-bottom: 0.75px solid #ddd;
             }
 
             .earnings-row.formula {
-                font-size: 6.5px;
+                font-size: 7.5px;
                 color: #333;
             }
 
             .earnings-row.total {
-                border-top: 1.5px solid #000;
-                border-bottom: 1.5px solid #000;
+                border-top: 2px solid #000;
+                border-bottom: 2px solid #000;
                 font-weight: bold;
                 margin-top: 2mm;
-                padding: 1.5mm 0;
-                font-size: 8px;
+                padding: 2mm 0;
+                font-size: 9px;
             }
 
             .deductions-section {
                 margin-top: 2mm;
-                font-size: 7px;
+                font-size: 8px;
             }
 
             .deductions-title {
                 font-weight: bold;
                 text-decoration: underline;
                 margin-bottom: 1mm;
-                font-size: 7.5px;
+                font-size: 8.5px;
             }
         }
 
@@ -598,6 +593,28 @@
             border: 2px solid #000;
             font-family: 'Courier New', monospace;
             font-size: 9px;
+        }
+
+        /* Button loading state */
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-loading {
+            position: relative;
+        }
+
+        .btn-loading::after {
+            content: '...';
+            position: absolute;
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
         }
 
         .payslip-header {
@@ -1024,14 +1041,30 @@
 
         // Select all
         function selectAll() {
-            document.querySelectorAll('.employee-checkbox').forEach(cb => cb.checked = true);
-            updateSelectionCount();
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Selecting...';
+            
+            setTimeout(() => {
+                document.querySelectorAll('.employee-checkbox').forEach(cb => cb.checked = true);
+                updateSelectionCount();
+                btn.disabled = false;
+                btn.textContent = '✓ Select All';
+            }, 100);
         }
 
         // Deselect all
         function deselectAll() {
-            document.querySelectorAll('.employee-checkbox').forEach(cb => cb.checked = false);
-            updateSelectionCount();
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Deselecting...';
+            
+            setTimeout(() => {
+                document.querySelectorAll('.employee-checkbox').forEach(cb => cb.checked = false);
+                updateSelectionCount();
+                btn.disabled = false;
+                btn.textContent = '✗ Deselect All';
+            }, 100);
         }
 
         // Search functionality
@@ -1108,12 +1141,21 @@
                 return;
             }
             
-            caDeductions[employeeName] = amount;
-            renderEmployees();
-            updateStats();
-            closeCAModal();
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Applying...';
             
-            alert(`CA Deduction of ₱${amount.toFixed(2)} applied to ${employeeName}`);
+            setTimeout(() => {
+                caDeductions[employeeName] = amount;
+                renderEmployees();
+                updateStats();
+                closeCAModal();
+                
+                btn.disabled = false;
+                btn.textContent = 'Apply Deduction';
+                
+                alert(`✓ CA Deduction of ₱${amount.toFixed(2)} successfully applied to ${employeeName}`);
+            }, 300);
         }
 
         // Download payslips
@@ -1121,17 +1163,22 @@
             const checkboxes = document.querySelectorAll('.employee-checkbox:checked');
             
             if (checkboxes.length === 0) {
-                alert('Please select at least one employee');
+                alert('Please select at least one employee to generate payslips.');
                 return;
             }
+
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Generating Payslips...';
 
             const printContainer = document.getElementById('printContainer');
             printContainer.innerHTML = '<div class="loading" style="color: #333;">Generating payslips...</div>';
 
             try {
-                const payslipsHtml = [];
                 const selectedEmployees = [];
                 
+                // Fetch attendance data for each selected employee
                 for (const checkbox of checkboxes) {
                     const index = parseInt(checkbox.dataset.index);
                     const employee = filteredEmployees[index];
@@ -1149,27 +1196,35 @@
                             }
                         }
                     } catch (error) {
-                        console.error('Error fetching attendance:', error);
+                        console.error('Error fetching attendance for ' + employee.name + ':', error);
                     }
                     
                     selectedEmployees.push(employee);
                 }
                 
-                // Group payslips into pages of 4 (2x2 grid)
+                // Group payslips into pages of 2 (top and bottom)
                 let pageHtml = '';
-                for (let i = 0; i < selectedEmployees.length; i += 4) {
-                    const pageEmployees = selectedEmployees.slice(i, i + 4);
+                for (let i = 0; i < selectedEmployees.length; i += 2) {
+                    const pageEmployees = selectedEmployees.slice(i, i + 2);
                     const payslipsInPage = pageEmployees.map(emp => generatePayslip(emp)).join('');
                     pageHtml += `<div class="payslip-page">${payslipsInPage}</div>`;
                 }
                 
                 printContainer.innerHTML = pageHtml;
-                setTimeout(() => window.print(), 500);
+                
+                // Give browser time to render before printing
+                setTimeout(() => {
+                    window.print();
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }, 500);
                 
             } catch (error) {
-                console.error('Error:', error);
-                alert('Error generating payslips');
+                console.error('Error generating payslips:', error);
+                alert('Error generating payslips. Please try again.');
                 printContainer.innerHTML = '';
+                btn.disabled = false;
+                btn.innerHTML = originalText;
             }
         }
 
