@@ -510,8 +510,50 @@
     <div class="print-container" id="printContainer"></div>
 
     <script>
-        // ⚠️ IMPORTANT: Update this with your deployed Apps Script Web App URL
+        // ================================================================================
+        // ⚠️ CONFIGURATION REQUIRED - UPDATE THIS URL
+        // ================================================================================
+        // Replace YOUR_DEPLOYMENT_ID with your actual Apps Script Web App deployment ID
+        // 
+        // To get this URL:
+        // 1. Go to your Apps Script editor
+        // 2. Click Deploy > New deployment
+        // 3. Select "Web app" type
+        // 4. Set "Who has access" to "Anyone"
+        // 5. Copy the Web App URL that ends with "/exec"
+        // 
+        // Example: https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxx/exec
+        // ================================================================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+        
+        // Configuration checker
+        (function checkConfig() {
+            if (APPS_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID')) {
+                console.error('⚠️⚠️⚠️ CONFIGURATION ERROR ⚠️⚠️⚠️');
+                console.error('You need to update APPS_SCRIPT_URL in vercel.html');
+                console.error('Current value:', APPS_SCRIPT_URL);
+                console.error('See instructions at the top of the script section');
+                
+                // Show visual warning
+                setTimeout(() => {
+                    const header = document.querySelector('.header');
+                    if (header) {
+                        const warning = document.createElement('div');
+                        warning.style.cssText = 'background: #f44336; color: white; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; font-weight: bold;';
+                        warning.innerHTML = `
+                            <h3 style="margin: 0 0 10px 0;">⚠️ CONFIGURATION REQUIRED</h3>
+                            <p style="margin: 0;">You need to update <code>APPS_SCRIPT_URL</code> in vercel.html with your actual Apps Script deployment URL.</p>
+                            <p style="margin: 10px 0 0 0; font-size: 14px;">Check the browser console (F12) for instructions.</p>
+                        `;
+                        header.appendChild(warning);
+                    }
+                }, 1000);
+            } else {
+                console.log('✓ Configuration looks good');
+                console.log('📡 Apps Script URL:', APPS_SCRIPT_URL);
+                console.log('🔗 Test this URL in your browser:', APPS_SCRIPT_URL + '?action=getPayrollData');
+            }
+        })();
         
         let allEmployees = [];
         let filteredEmployees = [];
@@ -523,33 +565,70 @@
                 const grid = document.getElementById('personnelGrid');
                 grid.innerHTML = '<div class="loading" style="color: #333;">Loading payroll data from Google Sheets...</div>';
                 
+                console.log('📡 Attempting to fetch from:', APPS_SCRIPT_URL);
+                console.log('📡 Full URL:', APPS_SCRIPT_URL + '?action=getPayrollData');
+                
                 // Call Apps Script API to get payroll data
                 const response = await fetch(APPS_SCRIPT_URL + '?action=getPayrollData', {
                     method: 'GET',
-                    mode: 'cors'
+                    mode: 'no-cors', // Try no-cors mode first
+                    redirect: 'follow'
                 });
                 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.status);
-                }
+                console.log('📡 Response received:', response);
+                console.log('📡 Response status:', response.status);
+                console.log('📡 Response type:', response.type);
                 
-                const result = await response.json();
-                
-                if (result.success && result.data && result.data.length > 0) {
-                    allEmployees = result.data;
-                    filteredEmployees = [...allEmployees];
-                    renderEmployees();
-                    updateStats();
-                    console.log('✓ Loaded ' + allEmployees.length + ' employees from Google Sheets');
+                // With no-cors, we can't read the response, so try again with cors
+                if (response.type === 'opaque') {
+                    console.log('⚠️ Got opaque response, trying with CORS mode...');
+                    
+                    const corsResponse = await fetch(APPS_SCRIPT_URL + '?action=getPayrollData', {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+                    
+                    if (!corsResponse.ok) {
+                        throw new Error('Network response was not ok: ' + corsResponse.status);
+                    }
+                    
+                    const result = await corsResponse.json();
+                    
+                    if (result.success && result.data && result.data.length > 0) {
+                        allEmployees = result.data;
+                        filteredEmployees = [...allEmployees];
+                        renderEmployees();
+                        updateStats();
+                        console.log('✓ Loaded ' + allEmployees.length + ' employees from Google Sheets');
+                    } else {
+                        console.warn('No payroll data returned:', result);
+                        throw new Error('No payroll data found in Google Sheets');
+                    }
                 } else {
-                    console.warn('No payroll data returned:', result);
-                    showError('No payroll data found in Google Sheets');
-                    loadSampleData();
+                    const result = await response.json();
+                    
+                    if (result.success && result.data && result.data.length > 0) {
+                        allEmployees = result.data;
+                        filteredEmployees = [...allEmployees];
+                        renderEmployees();
+                        updateStats();
+                        console.log('✓ Loaded ' + allEmployees.length + ' employees from Google Sheets');
+                    } else {
+                        console.warn('No payroll data returned:', result);
+                        throw new Error('No payroll data found in Google Sheets');
+                    }
                 }
                 
             } catch (error) {
-                console.error('Error fetching payroll data:', error);
-                showError('Failed to connect to Google Sheets: ' + error.message);
+                console.error('❌ Error fetching payroll data:', error);
+                console.error('❌ Error details:', error.message);
+                console.error('❌ Please check:');
+                console.error('   1. Apps Script URL is correct');
+                console.error('   2. Apps Script deployed with "Anyone" access');
+                console.error('   3. Using /exec URL (not /dev)');
+                console.error('   4. Test API directly: ' + APPS_SCRIPT_URL + '?action=getPayrollData');
+                
+                showError('Failed to connect to Google Sheets. Using sample data. Error: ' + error.message);
                 loadSampleData();
             }
         }
