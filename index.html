@@ -1376,8 +1376,8 @@
                     const employee = {...filteredEmployees[index]}; // Clone to avoid mutation
                     
                     try {
-                        console.log('Fetching attendance for:', employee.name);
-                        const response = await fetch(APPS_SCRIPT_URL + '?action=getEmployeeAttendanceDetails&name=' + encodeURIComponent(employee.name), {
+                        console.log('Fetching attendance for:', employee.name, 'Week:', employee.weekStart);
+                        const response = await fetch(APPS_SCRIPT_URL + '?action=getEmployeeAttendanceDetails&name=' + encodeURIComponent(employee.name) + '&weekStart=' + encodeURIComponent(employee.weekStart), {
                             method: 'GET',
                             mode: 'cors'
                         });
