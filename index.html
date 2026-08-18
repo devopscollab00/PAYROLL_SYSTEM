@@ -1365,7 +1365,7 @@
             btn.innerHTML = '⏳ Generating Payslips...';
 
             const printContainer = document.getElementById('printContainer');
-            printContainer.innerHTML = '<div class="loading" style="color: #333;">Fetching attendance data and generating payslips...</div>';
+            printContainer.innerHTML = '<div class="loading" style="color: #333; padding: 20px; text-align: center;"><h3>⏳ Fetching attendance data...</h3><p>Please wait while we retrieve detailed attendance records from Google Sheets.</p></div>';
 
             try {
                 const selectedEmployees = [];
@@ -1385,16 +1385,24 @@
                         if (response.ok) {
                             const result = await response.json();
                             console.log('Attendance result for', employee.name, ':', result);
+                            console.log('  Success:', result.success);
+                            console.log('  Daily records exists:', !!result.dailyRecords);
                             
                             if (result.success && result.dailyRecords) {
                                 employee.dailyRecords = result.dailyRecords;
-                                console.log('Daily records set:', employee.dailyRecords);
+                                console.log('  Daily records set for', employee.name);
+                                console.log('  Number of records:', employee.dailyRecords.length);
+                                
+                                // Log a sample record to verify data structure
+                                if (employee.dailyRecords.length > 0) {
+                                    console.log('  Sample record [0]:', employee.dailyRecords[0]);
+                                }
                             } else {
-                                console.warn('No daily records for', employee.name);
+                                console.warn('  No daily records in response for', employee.name);
                                 employee.dailyRecords = [];
                             }
                         } else {
-                            console.error('Failed to fetch attendance for', employee.name);
+                            console.error('  HTTP error fetching attendance for', employee.name, '- Status:', response.status);
                             employee.dailyRecords = [];
                         }
                     } catch (error) {
@@ -1442,6 +1450,10 @@
 
         // Generate payslip
         function generatePayslip(emp) {
+            console.log('=== GENERATING PAYSLIP FOR:', emp.name, '===');
+            console.log('Employee object:', emp);
+            console.log('Daily records:', emp.dailyRecords);
+            
             const formatDate = (dateStr) => {
                 if (!dateStr) return 'N/A';
                 const d = new Date(dateStr);
@@ -1458,64 +1470,94 @@
             };
             
             // Calculate hours worked per day
-            const calculateDayHours = (day) => {
+            const calculateDayHours = (day, dayIndex) => {
+                console.log('  Calculating hours for day', dayIndex, ':', day);
+                
                 if (!day || day.clockIn === '-' || day.clockOut === '-' || !day.clockIn || !day.clockOut) {
+                    console.log('  -> No data or missing clock times, returning -');
                     return '-';
                 }
                 
-                // Parse time strings (assuming format like "08:00 AM" or "8:00 AM")
+                // Parse time strings - handles multiple formats
                 const parseTime = (timeStr) => {
                     if (!timeStr || timeStr === '-') return null;
                     
-                    const cleanTime = timeStr.trim();
+                    console.log('    Parsing time:', timeStr, 'Type:', typeof timeStr);
+                    
+                    // Handle if timeStr is a Date object
+                    if (timeStr instanceof Date) {
+                        const hours = timeStr.getHours();
+                        const minutes = timeStr.getMinutes();
+                        const result = hours + (minutes / 60);
+                        console.log('    Date object parsed to:', result, 'hours');
+                        return result;
+                    }
+                    
+                    const cleanTime = timeStr.toString().trim();
+                    
+                    // Try to parse as 12-hour format with AM/PM
                     const parts = cleanTime.split(' ');
-                    if (parts.length !== 2) {
-                        console.warn('Invalid time format:', timeStr);
-                        return null;
+                    if (parts.length === 2) {
+                        const timeParts = parts[0].split(':');
+                        if (timeParts.length === 2) {
+                            let hours = parseInt(timeParts[0]);
+                            const minutes = parseInt(timeParts[1]);
+                            const period = parts[1].toUpperCase();
+                            
+                            // Validate parsed values
+                            if (!isNaN(hours) && !isNaN(minutes)) {
+                                // Convert to 24-hour format
+                                if (period === 'PM' && hours !== 12) hours += 12;
+                                if (period === 'AM' && hours === 12) hours = 0;
+                                
+                                const result = hours + (minutes / 60);
+                                console.log('    12-hour format parsed to:', result, 'hours');
+                                return result;
+                            }
+                        }
                     }
                     
-                    const timeParts = parts[0].split(':');
-                    if (timeParts.length !== 2) {
-                        console.warn('Invalid time parts:', parts[0]);
-                        return null;
+                    // Try to parse as 24-hour format (HH:MM)
+                    const timeParts24 = cleanTime.split(':');
+                    if (timeParts24.length === 2) {
+                        const hours = parseInt(timeParts24[0]);
+                        const minutes = parseInt(timeParts24[1]);
+                        
+                        if (!isNaN(hours) && !isNaN(minutes)) {
+                            const result = hours + (minutes / 60);
+                            console.log('    24-hour format parsed to:', result, 'hours');
+                            return result;
+                        }
                     }
                     
-                    let hours = parseInt(timeParts[0]);
-                    const minutes = parseInt(timeParts[1]);
-                    const period = parts[1].toUpperCase();
-                    
-                    // Validate parsed values
-                    if (isNaN(hours) || isNaN(minutes)) {
-                        console.warn('Could not parse hours/minutes:', timeStr);
-                        return null;
-                    }
-                    
-                    // Convert to 24-hour format
-                    if (period === 'PM' && hours !== 12) hours += 12;
-                    if (period === 'AM' && hours === 12) hours = 0;
-                    
-                    return hours + (minutes / 60);
+                    console.warn('    Could not parse time format:', timeStr);
+                    return null;
                 };
                 
                 const startHours = parseTime(day.clockIn);
                 const endHours = parseTime(day.clockOut);
                 
                 if (startHours === null || endHours === null) {
-                    console.warn('Could not parse times for day:', day);
+                    console.warn('  -> Could not parse times for day:', day);
                     return '-';
                 }
                 
                 let workedHours = endHours - startHours;
                 if (workedHours < 0) workedHours += 24; // Handle overnight shifts
                 
+                console.log('  -> Raw worked hours:', workedHours);
+                
                 // Deduct 1 hour for lunch if worked more than 4 hours and started before noon
                 if (workedHours > 4 && startHours < 12) {
+                    console.log('  -> Deducting 1 hour for lunch');
                     workedHours -= 1;
                 }
                 
                 // Cap at 8 hours per day
                 workedHours = Math.min(workedHours, 8);
                 workedHours = Math.max(workedHours, 0); // Don't allow negative
+                
+                console.log('  -> Final worked hours:', workedHours);
                 
                 // Return formatted value
                 if (workedHours === 0) return '-';
@@ -1528,6 +1570,9 @@
             const weekDates = emp.dates || getWeekDates(emp.weekStart);
             const dailyRecords = emp.dailyRecords || [];
             
+            console.log('Week dates:', weekDates);
+            console.log('Daily records array length:', dailyRecords.length);
+            
             // Shorten name if too long
             let displayName = emp.name;
             if (displayName.length > 30) {
@@ -1538,13 +1583,15 @@
             let attendanceCells = '';
             
             if (dailyRecords.length === 7) {
+                console.log('Processing 7 days of records...');
                 // Map through all 7 days (Monday to Sunday)
                 for (let i = 0; i < 7; i++) {
                     const day = dailyRecords[i];
-                    const hours = calculateDayHours(day);
+                    const hours = calculateDayHours(day, i);
                     attendanceCells += `<td style="font-weight: bold; font-size: 8px;">${hours}</td>`;
                 }
             } else {
+                console.warn('Daily records length is not 7:', dailyRecords.length);
                 // No data - show dashes for all 7 days
                 for (let i = 0; i < 7; i++) {
                     attendanceCells += '<td style="font-weight: bold; font-size: 8px;">-</td>';
