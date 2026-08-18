@@ -1469,102 +1469,51 @@
                        String(d.getDate()).padStart(2, '0');
             };
             
-            // Calculate hours worked per day
+            // Calculate day equivalent based on total work hours
+            // If 7.8-8 hours = "1" (full day)
+            // If less = fractional day (e.g., 4 hours = 0.5 day)
             const calculateDayHours = (day, dayIndex) => {
-                console.log('  Calculating hours for day', dayIndex, ':', day);
+                console.log('  Checking attendance for day', dayIndex, ':', day);
                 
-                if (!day || day.clockIn === '-' || day.clockOut === '-' || !day.clockIn || !day.clockOut) {
-                    console.log('  -> No data or missing clock times, returning -');
+                // Check if employee has attendance record
+                const hasClockIn = day.clockIn && day.clockIn !== '-' && day.clockIn !== '';
+                const hasClockOut = day.clockOut && day.clockOut !== '-' && day.clockOut !== '';
+                const totalHours = parseFloat(day.totalHours) || 0;
+                
+                console.log('  -> ClockIn:', day.clockIn, 'HasClockIn:', hasClockIn);
+                console.log('  -> ClockOut:', day.clockOut, 'HasClockOut:', hasClockOut);
+                console.log('  -> TotalHours:', totalHours);
+                
+                // No attendance
+                if (!hasClockIn && !hasClockOut && totalHours === 0) {
+                    console.log('  -> No attendance, returning -');
                     return '-';
                 }
                 
-                // Parse time strings - handles multiple formats
-                const parseTime = (timeStr) => {
-                    if (!timeStr || timeStr === '-') return null;
-                    
-                    console.log('    Parsing time:', timeStr, 'Type:', typeof timeStr);
-                    
-                    // Handle if timeStr is a Date object
-                    if (timeStr instanceof Date) {
-                        const hours = timeStr.getHours();
-                        const minutes = timeStr.getMinutes();
-                        const result = hours + (minutes / 60);
-                        console.log('    Date object parsed to:', result, 'hours');
-                        return result;
-                    }
-                    
-                    const cleanTime = timeStr.toString().trim();
-                    
-                    // Try to parse as 12-hour format with AM/PM
-                    const parts = cleanTime.split(' ');
-                    if (parts.length === 2) {
-                        const timeParts = parts[0].split(':');
-                        if (timeParts.length === 2) {
-                            let hours = parseInt(timeParts[0]);
-                            const minutes = parseInt(timeParts[1]);
-                            const period = parts[1].toUpperCase();
-                            
-                            // Validate parsed values
-                            if (!isNaN(hours) && !isNaN(minutes)) {
-                                // Convert to 24-hour format
-                                if (period === 'PM' && hours !== 12) hours += 12;
-                                if (period === 'AM' && hours === 12) hours = 0;
-                                
-                                const result = hours + (minutes / 60);
-                                console.log('    12-hour format parsed to:', result, 'hours');
-                                return result;
-                            }
-                        }
-                    }
-                    
-                    // Try to parse as 24-hour format (HH:MM)
-                    const timeParts24 = cleanTime.split(':');
-                    if (timeParts24.length === 2) {
-                        const hours = parseInt(timeParts24[0]);
-                        const minutes = parseInt(timeParts24[1]);
-                        
-                        if (!isNaN(hours) && !isNaN(minutes)) {
-                            const result = hours + (minutes / 60);
-                            console.log('    24-hour format parsed to:', result, 'hours');
-                            return result;
-                        }
-                    }
-                    
-                    console.warn('    Could not parse time format:', timeStr);
-                    return null;
-                };
+                // Full day: 7.8 to 8 hours = 1 day
+                if (totalHours >= 7.8 && totalHours <= 8) {
+                    console.log('  -> Full day (7.8-8 hours), returning 1');
+                    return '1';
+                }
                 
-                const startHours = parseTime(day.clockIn);
-                const endHours = parseTime(day.clockOut);
+                // Partial day: calculate day equivalent (hours / 8)
+                // Assuming 8 hours = 1 full day
+                const dayEquivalent = totalHours / 8;
                 
-                if (startHours === null || endHours === null) {
-                    console.warn('  -> Could not parse times for day:', day);
+                console.log('  -> Partial day, calculated:', dayEquivalent);
+                
+                // Format the result
+                if (dayEquivalent === 0) {
                     return '-';
+                } else if (dayEquivalent >= 0.95) {
+                    // Close to 1, just show 1
+                    return '1';
+                } else {
+                    // Show decimal (e.g., 0.5, 0.25, 0.75)
+                    const formatted = dayEquivalent.toFixed(2);
+                    // Remove trailing zeros: 0.50 -> 0.5, but keep 0.25
+                    return parseFloat(formatted).toString();
                 }
-                
-                let workedHours = endHours - startHours;
-                if (workedHours < 0) workedHours += 24; // Handle overnight shifts
-                
-                console.log('  -> Raw worked hours:', workedHours);
-                
-                // Deduct 1 hour for lunch if worked more than 4 hours and started before noon
-                if (workedHours > 4 && startHours < 12) {
-                    console.log('  -> Deducting 1 hour for lunch');
-                    workedHours -= 1;
-                }
-                
-                // Cap at 8 hours per day
-                workedHours = Math.min(workedHours, 8);
-                workedHours = Math.max(workedHours, 0); // Don't allow negative
-                
-                console.log('  -> Final worked hours:', workedHours);
-                
-                // Return formatted value
-                if (workedHours === 0) return '-';
-                
-                // Format: show 1 decimal place, but if it's a whole number, show it cleanly
-                const formatted = workedHours.toFixed(1);
-                return formatted.endsWith('.0') ? formatted.slice(0, -2) : formatted;
             };
             
             const weekDates = emp.dates || getWeekDates(emp.weekStart);
